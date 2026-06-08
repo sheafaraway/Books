@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oliver & Jacob's Reading List</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;color:#1e293b;background:#f1f5f9;min-height:100vh;}
+input,select,textarea,button{font-family:inherit;font-size:14px;}
+input[type=text],input[type=number],select,textarea{border:0.5px solid #cbd5e1;border-radius:8px;padding:6px 10px;background:#fff;color:#1e293b;outline:none;width:100%;}
+input[type=text]:focus,input[type=number]:focus,select:focus,textarea:focus{border-color:#378ADD;box-shadow:0 0 0 2px #B5D4F4;}
+textarea{resize:vertical;min-height:60px;line-height:1.5;}
+button{border:0.5px solid #cbd5e1;border-radius:8px;padding:6px 14px;background:#fff;color:#1e293b;cursor:pointer;}
+button:hover{background:#f8fafc;}
+.btn-primary{background:#185FA5;color:#fff;border-color:#185FA5;}
+.btn-primary:hover{background:#0C447C;border-color:#0C447C;}
+.btn-success{background:#3B6D11;color:#fff;border-color:#3B6D11;}
+.tab-btn{padding:7px 16px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.3);background:transparent;color:rgba(255,255,255,0.7);font-size:13px;}
+.tab-btn.active{background:rgba(255,255,255,0.22);color:#fff;font-weight:500;}
+.tab-btn.rec-tab{background:rgba(251,191,36,0.25);color:#fef3c7;border-color:rgba(251,191,36,0.5);}
+.tab-btn.rec-tab.active{background:#f59e0b;color:#fff;border-color:#f59e0b;}
+.header-wrap{background:linear-gradient(100deg,#0C447C 0%,#185FA5 55%,#378ADD 100%);padding:18px 22px 16px;position:relative;overflow:hidden;}
+.header-wrap::before{content:"📚";position:absolute;top:-18px;right:-10px;font-size:90px;opacity:0.07;line-height:1;pointer-events:none;}
+.header-wrap::after{content:"⭐";position:absolute;bottom:-14px;right:60px;font-size:60px;opacity:0.06;line-height:1;pointer-events:none;}
+th{background:#0C447C;color:#E6F1FB;padding:9px 10px;text-align:left;font-size:12px;font-weight:500;letter-spacing:0.04em;white-space:nowrap;position:sticky;top:0;z-index:2;}
+td{padding:6px 10px;border-bottom:0.5px solid #e2e8f0;vertical-align:middle;}
+tr.is-rec td{opacity:0.52;}
+tr.is-rec:hover td{opacity:1;background:#f8fafc;}
+tr:not(.is-rec):hover td{background:#f8fafc;}
+tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e1;}
+.star{font-size:15px;color:#B4B2A9;transition:color 0.1s;}
+.star.filled{color:#BA7517;}
+.star.dim{color:#D1D5DB;}
+.star.editable{cursor:pointer;}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;}
+.badge-read{background:#EAF3DE;color:#3B6D11;}
+.badge-dnf{background:#FAEEDA;color:#854F0B;}
+.badge-notyet{background:#E6F1FB;color:#185FA5;}
+.badge-notyet.clickable{cursor:pointer;border:0.5px solid #85B7EB;transition:background 0.15s;}
+.badge-notyet.clickable:hover{background:#B5D4F4;}
+.cell-edit{padding:3px 6px;border-radius:4px;min-height:26px;}
+.cell-edit.editable{cursor:text;}
+.cell-edit.editable:hover{background:#f1f5f9;}
+.cell-edit.empty{color:#94a3b8;font-style:italic;}
+.title-cell{padding:3px 6px;border-radius:4px;cursor:pointer;min-height:26px;display:flex;align-items:center;gap:5px;}
+.title-cell:hover{background:#E6F1FB;color:#0C447C;}
+.title-cell .expand-icon{font-size:11px;color:#94a3b8;flex-shrink:0;transition:transform 0.2s;}
+.title-cell.open .expand-icon{transform:rotate(90deg);color:#185FA5;}
+.boost-btn{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;border:0.5px solid #cbd5e1;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;user-select:none;}
+.boost-btn:hover{border-color:#378ADD;color:#185FA5;background:#E6F1FB;}
+.boost-btn.boosted{border-color:#378ADD;color:#185FA5;background:#E6F1FB;font-weight:500;}
+.expand-panel{padding:14px 18px 16px;display:flex;flex-direction:column;gap:12px;}
+.comment-block{background:#fff;border:0.5px solid #e2e8f0;border-radius:8px;padding:10px 14px;}
+.comment-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.rec-note-block{background:#E6F1FB;border:0.5px solid #85B7EB;border-radius:8px;padding:10px 14px;}
+.panel{background:#fff;border:0.5px solid #e2e8f0;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.filters{display:flex;flex-wrap:wrap;gap:8px;padding:10px 16px;border-bottom:0.5px solid #e2e8f0;background:#f8fafc;align-items:center;}
+.divider-row td{background:#f8fafc;padding:4px 10px;font-size:11px;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;border-bottom:0.5px solid #e2e8f0;}
+.rec-form{padding:14px 16px;display:flex;flex-direction:column;gap:9px;border-bottom:0.5px solid #e2e8f0;}
+.rec-tip{font-size:12px;color:#0C447C;padding:9px 14px;border-bottom:0.5px solid #e2e8f0;line-height:1.5;background:#E6F1FB;}
+.layout{display:flex;gap:16px;padding:16px;}
+.main-panel{flex:1;min-width:0;}
+.side-panel{width:300px;flex-shrink:0;}
+.table-wrap{overflow:auto;flex:1;max-height:calc(100vh - 220px);}
+.mobile-tabs{display:none;gap:6px;}
+
+  table th:nth-child(8), table td:nth-child(8){display:none;}
+  /* Shrink age and boost columns */
+  table th:nth-child(4), table td:nth-child(4){width:36px!important;}
+  table th:nth-child(9), table td:nth-child(9){width:54px!important;}
+  /* Shrink star columns slightly */
+  table th:nth-child(5), table td:nth-child(5),
+  table th:nth-child(6), table td:nth-child(6){width:80px!important;}
+  /* Filters: search on top, selects in a row below */
+  .filters{flex-wrap:wrap;gap:6px;padding:8px 10px;}
+  .filters>div.search-wrap{order:-1;width:100%;max-width:100%!important;margin-left:0!important;flex:none;}
+  .filters>select{font-size:12px;padding:4px 6px;flex:1;min-width:80px;width:auto!important;}
+}
+.sync-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle;}
+.sync-dot.ok{background:#4ade80;}
+.sync-dot.saving{background:#fbbf24;animation:pulse 0.8s infinite;}
+.sync-dot.err{background:#f87171;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinner{width:32px;height:32px;border:3px solid #B5D4F4;border-top-color:#185FA5;border-radius:50%;animation:spin 0.7s linear infinite;}
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:200;font-size:15px;color:#185FA5;}
+.export-btn{position:fixed;bottom:16px;right:16px;background:#0C447C;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;gap:6px;z-index:100;}
+.export-btn:hover{background:#185FA5;}
+.owner-bar{position:fixed;bottom:16px;left:16px;z-index:100;display:flex;align-items:center;gap:8px;}
+.owner-pill{background:#0C447C;color:#fff;border-radius:8px;padding:8px 14px;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.lock-btn{background:rgba(255,255,255,0.15);border:none;border-radius:6px;color:#fff;padding:3px 8px;font-size:11px;cursor:pointer;}
+.lock-btn:hover{background:rgba(255,255,255,0.25);}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:300;}
+.modal{background:#fff;border-radius:12px;padding:28px 28px 24px;width:320px;box-shadow:0 8px 32px rgba(0,0,0,0.15);}
+@media(max-width:820px){
+  .layout{flex-direction:column;padding:12px;}
+  .side-panel{width:100%;}
+  .layout.show-main .side-panel{display:none;}
+  .layout.show-side .main-panel{display:none;}
+  .mobile-tabs{display:flex!important;}
+  .table-wrap{max-height:60vh;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  /* Filters: search full width on top, selects wrap below */
+  .filters{flex-wrap:wrap;gap:6px;padding:8px 10px;}
+  .search-wrap{order:-1;width:100%;max-width:100%!important;margin-left:0!important;flex:none!important;}
+  .filters select{font-size:12px;padding:4px 6px;flex:1;min-width:80px;}
+}
+@media(max-width:600px){
+  /* Switch to card-style rows on small phones */
+  #main-table, #main-table thead, #main-table tbody, #main-table tfoot,
+  #main-table th, #main-table td, #main-table tr { display:block; }
+  #main-table thead { display:none; }
+  #main-table tr:not(.expanded-row):not(.divider-row) {
+    border:0.5px solid #e2e8f0;
+    border-radius:10px;
+    margin-bottom:8px;
+    padding:10px 12px;
+    background:#fff;
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
+    align-items:flex-start;
+    position:relative;
+  }
+  #main-table tr.is-rec { opacity:0.6; }
+  /* Row number — hide on mobile */
+  #main-table td:nth-child(1){ display:none; }
+  /* Title — full width */
+  #main-table td:nth-child(2){ width:100%; padding:0 0 4px 0; font-weight:500; }
+  /* Author — full width, smaller */
+  #main-table td:nth-child(3){ width:100%; padding:0 0 6px 0; font-size:12px; color:#64748b; }
+  /* Age */
+  #main-table td:nth-child(4){ padding:0; font-size:12px; color:#64748b; }
+  #main-table td:nth-child(4):before{ content:"Age: "; font-size:11px; color:#94a3b8; }
+  /* Oliver stars */
+  #main-table td:nth-child(5){ padding:0; }
+  #main-table td:nth-child(5):before{ content:"Oliver "; font-size:11px; color:#94a3b8; display:block; }
+  /* Jacob stars */
+  #main-table td:nth-child(6){ padding:0; }
+  #main-table td:nth-child(6):before{ content:"Jacob "; font-size:11px; color:#94a3b8; display:block; }
+  /* Status */
+  #main-table td:nth-child(7){ padding:0; }
+  /* Recommended by */
+  #main-table td:nth-child(8){ padding:0; font-size:12px; color:#3C3489; }
+  /* Boosts */
+  #main-table td:nth-child(9){ padding:0; margin-left:auto; }
+  /* Delete button */
+  #main-table td:nth-child(10){ position:absolute; top:8px; right:8px; padding:0; }
+  /* Expanded panel — full width card */
+  #main-table tr.expanded-row { display:block; padding:0; border-radius:0; margin-bottom:8px; border:none; }
+  #main-table tr.expanded-row td { display:block; padding:0; }
+  /* Divider row */
+  #main-table tr.divider-row { display:block; padding:4px 10px; border-radius:0; margin:4px 0; background:#f8fafc; border:none; }
+  /* Title cell — remove flex constraints */
+  .title-cell { white-space:normal !important; }
+  .title-cell span:first-child { white-space:normal !important; overflow:visible !important; text-overflow:unset !important; }
+  /* Status select full width */
+  #main-table td:nth-child(7) select { width:100%; font-size:12px; }
+}
+</style>
+</head>
+<body>
+
+<div id="loading-overlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <div>Loading your reading list…</div>
+</div>
+
+<!-- Owner login modal -->
+<div id="login-modal" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div style="font-size:17px;font-weight:600;margin-bottom:6px;">Family login</div>
+    <div style="font-size:13px;color:#64748b;margin-bottom:18px;">Enter the password to edit ratings and notes.</div>
+    <input type="password" id="pw-input" placeholder="Password" style="margin-bottom:12px;" onkeydown="if(event.key==='Enter')checkPw()">
+    <div id="pw-error" style="color:#E24B4A;font-size:12px;margin-bottom:10px;display:none;">Wrong password — try again.</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-primary" onclick="checkPw()" style="flex:1;">Log in</button>
+      <button onclick="closeLogin()" style="flex:1;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="header-wrap">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-size:22px;font-weight:600;color:#fff;letter-spacing:-0.01em;">Oliver &amp; Jacob's Reading List 📖</div>
+      <div style="font-size:13px;color:#B5D4F4;margin-top:4px;font-style:italic;">See our picks, share yours — happy reading!</div>
+    </div>
+    <div class="mobile-tabs">
+      <button class="tab-btn active" onclick="switchTab('main')" id="tab-main">Books</button>
+      <button class="tab-btn rec-tab" onclick="switchTab('side')" id="tab-side">📬 Recommend</button>
+    </div>
+  </div>
+  <div style="font-size:12px;color:#85B7EB;margin-top:8px;display:flex;align-items:center;gap:12px;">
+    <span id="header-stats"></span>
+    <span id="sync-status"></span>
+  </div>
+</div>
+
+<div id="howto" style="background:#fff;border-bottom:0.5px solid #e2e8f0;padding:0;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;cursor:pointer;user-select:none;" onclick="toggleHowto()">
+    <span style="font-size:13px;font-weight:500;color:#185FA5;display:flex;align-items:center;gap:7px;">
+      <i class="ti ti-info-circle" style="font-size:15px;"></i> How to use this list
+    </span>
+    <i class="ti ti-chevron-down" id="howto-chevron" style="font-size:14px;color:#94a3b8;transition:transform 0.2s;"></i>
+  </div>
+  <div id="howto-body" style="display:none;padding:4px 18px 16px;border-top:0.5px solid #f1f5f9;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:10px;">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:22px;line-height:1;">💬</span>
+        <div>
+          <div style="font-weight:500;font-size:13px;color:#1e293b;margin-bottom:2px;">Read our reviews</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.5;">Click any book title with a <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#378ADD;vertical-align:middle;margin:0 2px;"></span> blue dot to read reviews and notes.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:22px;line-height:1;">📬</span>
+        <div>
+          <div style="font-weight:500;font-size:13px;color:#1e293b;margin-bottom:2px;">Recommend a book</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.5;">Use the panel on the right to suggest a book. It'll appear at the bottom of the list for the family to find.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:22px;line-height:1;">⬆️</span>
+        <div>
+          <div style="font-weight:500;font-size:13px;color:#1e293b;margin-bottom:2px;">Boost a recommendation</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.5;">Hit the <i class="ti ti-arrow-up" style="font-size:11px;color:#185FA5;"></i> up-arrow on any unread book to boost it. Sort by "Most boosted" to see crowd favourites rise to the top.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:22px;line-height:1;">⭐</span>
+        <div>
+          <div style="font-weight:500;font-size:13px;color:#1e293b;margin-bottom:2px;">Find the best books</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.5;">Sort by Oliver or Jacob's rating to see the books they loved most. Filter by status to find what's been read, skipped, or is still on the list.</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:#94a3b8;">
+      <i class="ti ti-lock" style="font-size:12px;vertical-align:-1px;"></i> Family members can log in (bottom-left) to add ratings, update statuses, and write reviews.
+    </div>
+  </div>
+</div>
+
+<div class="layout show-main" id="layout">
+  <div class="panel main-panel">
+    <div class="filters" style="flex-wrap:wrap;">
+      <select id="filter-status" onchange="render()" style="width:auto;">
+        <option value="all">All statuses</option>
+        <option value="read">Read</option>
+        <option value="notyet">Not yet read</option>
+        <option value="dnf">Did not finish</option>
+      </select>
+      <select id="filter-rating" onchange="render()" style="width:auto;">
+        <option value="all">Any rating</option>
+        <option value="5">★ 5 stars</option>
+        <option value="4">★ 4+</option>
+        <option value="3">★ 3+</option>
+      </select>
+      <select id="filter-age" onchange="render()" style="width:auto;"></select>
+      <select id="sort-by" onchange="render()" style="width:auto;">
+        <option value="">Default order</option>
+        <option value="title">Title A–Z</option>
+        <option value="oliver">Oliver's rating</option>
+        <option value="jacob">Jacob's rating</option>
+        <option value="boosts">Most boosted</option>
+        <option value="age">Age read</option>
+      </select>
+      <div class="search-wrap" style="position:relative;flex:1;min-width:140px;max-width:240px;margin-left:auto;">
+        <i class="ti ti-search" style="position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;color:#94a3b8;pointer-events:none;"></i>
+        <input type="text" id="search-input" placeholder="Search…" oninput="render()" style="padding-left:30px;font-size:13px;border-radius:8px;width:100%;">
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="main-table" style="width:100%;border-collapse:collapse;table-layout:fixed;">
+        <colgroup>
+          <col style="width:24px"><col style="min-width:120px;max-width:200px"><col style="min-width:90px;max-width:140px">
+          <col style="width:44px"><col style="width:96px"><col style="width:96px">
+          <col style="width:100px"><col style="width:105px"><col style="width:70px"><col style="width:24px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th></th><th>Title</th><th>Author</th><th>Age</th>
+            <th>Oliver</th><th>Jacob</th><th>Status</th>
+            <th>Recommended by</th><th><i class="ti ti-arrow-up"></i> Boosts</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot">
+          <tr id="add-row" style="display:none;"><td colspan="10" style="padding:8px 10px;">
+            <button onclick="addBook()" style="font-size:13px;color:#185FA5;border-color:#B5D4F4;">
+              <i class="ti ti-plus"></i> Add book
+            </button>
+          </td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel side-panel" id="side-panel">
+    <div style="padding:11px 14px;border-bottom:0.5px solid #fde68a;background:#fffbeb;display:flex;align-items:center;gap:8px;">
+      <i class="ti ti-mail" style="font-size:15px;color:#d97706;"></i>
+      <span style="font-weight:500;font-size:14px;color:#92400e;">Recommend a book</span>
+    </div>
+    <div class="rec-tip">
+      <i class="ti ti-info-circle" style="font-size:13px;vertical-align:-1px;"></i>
+      Recommendations are visible to everyone instantly. Click any book title to see notes and reviews!
+    </div>
+    <div class="rec-form">
+      <div>
+        <div style="font-size:11px;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.05em;">Title *</div>
+        <input type="text" id="rec-title" placeholder="Book title">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.05em;">Author</div>
+          <input type="text" id="rec-author" placeholder="Author">
+        </div>
+        <div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.05em;">Your name</div>
+          <input type="text" id="rec-name" placeholder="Who's recommending?">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.05em;">Why they'll love it</div>
+        <textarea id="rec-note" placeholder="Add a note…" style="min-height:52px;"></textarea>
+      </div>
+      <button id="rec-btn" onclick="submitRec()" style="background:#f59e0b;color:#fff;border-color:#f59e0b;border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer;font-weight:500;">📬 Submit recommendation</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px;">
+      <div style="font-size:13px;color:#64748b;text-align:center;line-height:1.7;">
+        Click any <strong style="font-weight:500;">book title</strong> to read reviews and rec notes.<br><br>
+        Recommended books sit at the bottom greyed out. The family can click <span class="status-badge badge-notyet" style="vertical-align:1px;">Not yet read</span> to move one up to the active list.
+      </div>
+
+      <div style="border-top:0.5px solid #e2e8f0;padding-top:16px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+          <i class="ti ti-bell" style="font-size:15px;color:#f59e0b;" aria-hidden="true"></i>
+          <span style="font-weight:500;font-size:14px;color:#1e293b;">Get notified</span>
+        </div>
+        <div style="font-size:12px;color:#64748b;margin-bottom:12px;line-height:1.5;">Leave your email and we'll let you know when we post new reviews — or when we read a book you recommended.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <input type="email" id="sub-email" placeholder="your@email.com" style="font-size:13px;">
+          <div style="display:flex;flex-direction:column;gap:6px;padding:2px 0;">
+            <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#475569;cursor:pointer;">
+              <input type="checkbox" id="sub-all" checked style="margin-top:2px;width:14px;height:14px;accent-color:#185FA5;flex-shrink:0;">
+              <span>Notify me when new books are reviewed</span>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#475569;cursor:pointer;">
+              <input type="checkbox" id="sub-rec" style="margin-top:2px;width:14px;height:14px;accent-color:#f59e0b;flex-shrink:0;">
+              <span>Notify me when a book I recommended gets reviewed</span>
+            </label>
+          </div>
+          <button onclick="subscribeEmail()" id="sub-btn" style="background:#185FA5;color:#fff;border-color:#185FA5;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <i class="ti ti-bell" style="font-size:13px;" aria-hidden="true"></i> Subscribe for updates
+          </button>
+          <div id="sub-msg" style="display:none;font-size:12px;text-align:center;padding:4px 0;line-height:1.5;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Owner bar (shown when logged in) -->
+<div class="owner-bar" id="owner-bar" style="display:none;">
+  <div class="owner-pill">
+    <i class="ti ti-pencil" style="font-size:14px;"></i>
+    <span>Editing as family</span>
+    <button class="lock-btn" onclick="logout()">Lock</button>
+  </div>
+</div>
+
+<!-- Login prompt (shown when logged out) -->
+<div class="owner-bar" id="guest-bar">
+  <button onclick="showLogin()" style="background:#fff;border-color:#cbd5e1;font-size:12px;padding:8px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.1);display:flex;align-items:center;gap:6px;">
+    <i class="ti ti-lock" style="font-size:13px;color:#64748b;"></i> Family login
+  </button>
+</div>
+
+<button class="export-btn" onclick="exportCSV()" title="Download full list as spreadsheet">
+  <i class="ti ti-table-export" style="font-size:15px;"></i> Export CSV
+</button>
+
+<script>
+const SUPABASE_URL = 'https://fyggpjsodfpdqfskcbtg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5Z2dwanNvZGZwZHFmc2tjYnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTI2NjgsImV4cCI6MjA5NTQ2ODY2OH0.2snOi-YFXAH8EtUAQG2tZ7KyRoN8IQhpEpwz-l_jB3M';
+// Change this to whatever password you want!
+const OWNER_PASSWORD = 'chili';
+
+async function sbFetch(path, opts={}) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    ...opts,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...(opts.headers||{})
+    }
+  });
+  if (!res.ok) { const t = await res.text(); throw new Error(t); }
+  const txt = await res.text();
+  return txt ? JSON.parse(txt) : null;
+}
+
+function setSyncStatus(state, msg) {
+  document.getElementById('sync-status').innerHTML =
+    `<span class="sync-dot ${state}"></span><span style="font-size:11px;">${msg}</span>`;
+}
+
+// ---- Auth ----
+let isOwner = sessionStorage.getItem('rl_owner') === '1';
+
+function updateOwnerUI() {
+  document.getElementById('owner-bar').style.display = isOwner ? 'flex' : 'none';
+  document.getElementById('guest-bar').style.display = isOwner ? 'none' : 'flex';
+  document.getElementById('add-row').style.display = isOwner ? '' : 'none';
+  render();
+}
+function showLogin() { document.getElementById('login-modal').style.display='flex'; document.getElementById('pw-input').value=''; document.getElementById('pw-error').style.display='none'; setTimeout(()=>document.getElementById('pw-input').focus(),50); }
+function closeLogin() { document.getElementById('login-modal').style.display='none'; }
+function checkPw() {
+  if(document.getElementById('pw-input').value === OWNER_PASSWORD) {
+    isOwner=true; sessionStorage.setItem('rl_owner','1');
+    closeLogin(); updateOwnerUI();
+  } else {
+    document.getElementById('pw-error').style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+function logout() { isOwner=false; sessionStorage.removeItem('rl_owner'); updateOwnerUI(); }
+
+// ---- Seed data ----
+const SEED_BOOKS = [
+  {title:"Forward",author:"Veronica Roth",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"2001: A Space Odyssey",author:"Dick Hill",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Egg and Other Stories",author:"Andy Weir",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The City of Ember",author:"Jeanne DuPrau",age:10,oliver:null,jacob:3,status:"dnf",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Artemis",author:"Andy Weir",age:10,oliver:null,jacob:5,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Martian",author:"Andy Weir",age:10,oliver:null,jacob:5,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Project Hail Mary",author:"Andy Weir",age:10,oliver:null,jacob:5,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Flatland: A Romance of Many Dimensions",author:"Edwin Abbott",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Adventures of Tom Sawyer",author:"Mark Twain",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Alchemist",author:"Paulo Coelho",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"A Study in Scarlet",author:"Arthur Conan Doyle",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Sherlock Holmes: The Definitive Collection",author:"Arthur Conan Doyle",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Hound of the Baskervilles",author:"Arthur Conan Doyle",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Frankenstein",author:"Mary Shelley",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"A Wrinkle in Time",author:"Madeleine L'Engle",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Strange Case of Dr. Jekyll and Mr. Hyde",author:"Robert Louis Stevenson",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Swifts: Dictionary of Scoundrels",author:"Beth Lincoln",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Swifts: A Gallery of Rogues",author:"Beth Lincoln",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Fahrenheit 451",author:"Ray Bradbury",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"From the Wizarding Archive",author:"J.K. Rowling",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Sorcerer's Stone",author:"J.K. Rowling",age:6,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Chamber of Secrets",author:"J.K. Rowling",age:7,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Prisoner of Azkaban",author:"J.K. Rowling",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Goblet of Fire",author:"J.K. Rowling",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Order of the Phoenix",author:"J.K. Rowling",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Half-Blood Prince",author:"J.K. Rowling",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Deathly Hallows",author:"J.K. Rowling",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter and the Cursed Child",author:"J.K. Rowling",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Harry Potter: A History of Magic",author:"Pottermore Publishing",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Warriors: The Original",author:"Erin Hunter",age:8,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Art of War",author:"Sun Tzu",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Strength of the Mountains",author:"Gregory O. Smith",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"My Side of the Mountain",author:"Jean Craighead George",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Shane",author:"Jack Schaefer",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Red Pyramid: The Kane Chronicles, Book 1",author:"Rick Riordan",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Legend of Bass Reeves",author:"Gary Paulsen",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Blood on the River: James Town, 1607",author:"Elisa Carbone",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Penderwicks",author:"Jeanne Birdsall",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Invisible Man",author:"H.G. Wells",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Peter and the Starcatchers",author:"Dave Barry",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Rascal",author:"Sterling North",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Magnus Chase: Sword of Summer",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Magnus Chase: The Hammer of Thor",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Magnus Chase: The Ship of the Dead",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Lord of the Rings: The Fellowship of the Ring",author:"J.R.R. Tolkien",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Lord of the Rings: The Two Towers",author:"J.R.R. Tolkien",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Percy Jackson: The Lightning Thief",author:"Rick Riordan",age:8,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Percy Jackson: The Sea of Monsters",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Percy Jackson: The Titan's Curse",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Percy Jackson: The Battle of the Labyrinth",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Percy Jackson: The Last Olympian",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Chalice of the Gods",author:"Rick Riordan",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Pax",author:"Sara Pennypacker",age:5,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Very Very Far North",author:"Dan Bar-El",age:6,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Just Beyond the Very Very Far North",author:"Dan Bar-El",age:null,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Miraculous Journey of Edward Toulane",author:"Kate DiCamillo",age:6,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The One and Only Ivan",author:"Kate DiCamillo",age:null,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Noctournals",author:"Tracey Hecht",age:6,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"A Rover's Story",author:"Jasmine Warga",age:null,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Wild Robot",author:"Peter Brown",age:6,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Wild Robot Escapes",author:"Peter Brown",age:7,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Wild Robot Protects",author:"Peter Brown",age:8,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Legend of Greg",author:"Chris Rylander",age:null,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"On the Edge of the Dark Sea of Darkness",author:"Andrew Peterson",age:null,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Calvin and Hobbes Portable Compendium",author:"Bill Watterson",age:8,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Iliad: A Graphic Novel",author:"Gareth Hinds",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Odyssey: A Graphic Novel",author:"Gareth Hinds",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"The Phantom Tollbooth",author:"Norton Juster",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"Beowulf: A Graphic Novel",author:"Gareth Hinds",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+  {title:"In the Footsteps of Crazy Horse",author:"Joseph Marshall III",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
+];
+
+// ---- State ----
+let books = [];
+let expandedId = null;
+let boostedIds = new Set(JSON.parse(localStorage.getItem('rl_boosted')||'[]'));
+let saveTimer = null;
+
+// ---- DB helpers ----
+function dbToBook(r) {
+  return { id:r.id, title:r.title, author:r.author, age:r.age,
+    oliver:r.oliver, jacob:r.jacob, status:r.status||'read',
+    recBy:r.rec_by, recNote:r.rec_note, boosts:r.boosts||0,
+    isRec:r.is_rec||false, oliverNote:r.oliver_note, jacobNote:r.jacob_note };
+}
+function bookToDb(b) {
+  return { title:b.title, author:b.author, age:b.age,
+    oliver:b.oliver, jacob:b.jacob, status:b.status,
+    rec_by:b.recBy, rec_note:b.recNote, boosts:b.boosts||0,
+    is_rec:b.isRec||false, oliver_note:b.oliverNote, jacob_note:b.jacobNote,
+    updated_at:new Date().toISOString() };
+}
+
+async function loadAll() {
+  try {
+    const data = await sbFetch('books?order=is_rec.asc,updated_at.asc');
+    if (!data || data.length === 0) {
+      setSyncStatus('saving','Setting up your list…');
+      await sbFetch('books', {method:'POST', body:JSON.stringify(SEED_BOOKS), prefer:'return=minimal'});
+      const fresh = await sbFetch('books?order=is_rec.asc,updated_at.asc');
+      books = (fresh||[]).map(dbToBook);
+    } else {
+      books = data.map(dbToBook);
+    }
+    setSyncStatus('ok','Synced');
+    document.getElementById('loading-overlay').style.display='none';
+    updateAgeFilter(); updateOwnerUI(); render();
+  } catch(e) {
+    setSyncStatus('err','Connection error');
+    document.getElementById('loading-overlay').innerHTML=
+      '<div style="font-size:15px;color:#E24B4A;text-align:center;">Could not connect.<br>Check your internet connection.</div>';
+  }
+}
+
+async function saveBook(b) {
+  setSyncStatus('saving','Saving…');
+  try {
+    await sbFetch('books?id=eq.'+b.id, {method:'PATCH', body:JSON.stringify(bookToDb(b)), prefer:'return=minimal'});
+    setSyncStatus('ok','Saved');
+  } catch(e) { setSyncStatus('err','Save failed'); }
+}
+function debouncedSave(b) {
+  clearTimeout(saveTimer); setSyncStatus('saving','Saving…');
+  saveTimer = setTimeout(()=>saveBook(b), 800);
+}
+async function insertBook(b) {
+  setSyncStatus('saving','Saving…');
+  try {
+    const r = await sbFetch('books', {method:'POST', body:JSON.stringify(bookToDb(b))});
+    if(r&&r[0]) b.id = r[0].id;
+    setSyncStatus('ok','Saved');
+  } catch(e) { setSyncStatus('err','Save failed'); }
+}
+async function deleteBook(id) {
+  setSyncStatus('saving','Saving…');
+  try {
+    await sbFetch('books?id=eq.'+id, {method:'DELETE', prefer:'return=minimal'});
+    setSyncStatus('ok','Saved');
+  } catch(e) { setSyncStatus('err','Save failed'); }
+}
+
+// ---- Use row index to avoid UUID-in-onclick issues ----
+// All onclick handlers use data-idx attributes and delegate via tbody click
+
+function getBookByIdx(idx) { return _renderedRows[parseInt(idx)]; }
+let _renderedRows = []; // maps render-index → book object
+
+// ---- UI Actions ----
+function setStar(idx, field, val) {
+  if(!isOwner) { showLogin(); return; }
+  const b = getBookByIdx(idx); if(!b) return;
+  if(b[field]===val) b[field]=null; else b[field]=val;
+  if((b.oliver||b.jacob)&&b.status==="notyet"){b.status="read";b.isRec=false;}
+  saveBook(b); render();
+}
+function hoverStars(el,n){Array.from(el.parentElement.children).forEach((s,i)=>{if(s.classList.contains('editable'))s.style.color=i<n?'#BA7517':'#B4B2A9';});}
+function unhoverStars(el,idx,field){const b=getBookByIdx(idx);const val=b?(b[field]||0):0;Array.from(el.parentElement.children).forEach((s,i)=>{s.style.color=i<val?'#BA7517':'#B4B2A9';});}
+
+function editCell(idx, field, el) {
+  if(!isOwner) { showLogin(); return; }
+  const b = getBookByIdx(idx); if(!b) return;
+  const curVal = b[field];
+  const inp = document.createElement('input');
+  inp.type = field==='age'?'number':'text'; inp.value = curVal||'';
+  inp.style.cssText='width:100%;border:0.5px solid #378ADD;border-radius:4px;padding:3px 6px;background:#fff;color:#1e293b;outline:none;box-shadow:0 0 0 2px #B5D4F4;';
+  el.innerHTML=''; el.appendChild(inp); inp.focus();
+  function commit(){
+    const v=inp.value.trim();
+    if(field==='age') b[field]=v===''?null:parseInt(v); else b[field]=v||null;
+    saveBook(b); render(); updateAgeFilter();
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();});
+}
+
+function showSaveBtn(btnId) {
+  const btn = document.getElementById(btnId);
+  if(btn) btn.style.display='block';
+}
+
+function saveNoteFromTA(taId, idx, field) {
+  const ta = document.getElementById(taId);
+  if(!ta) return;
+  const val = ta.value;
+  saveNote(idx, field, val);
+  // Show "Saved!" confirmation
+  const savedMsg = document.getElementById(taId+'-saved');
+  if(savedMsg){ savedMsg.style.display='inline'; setTimeout(()=>{ savedMsg.style.display='none'; }, 2000); }
+}
+
+function saveNote(idx, field, val) {
+  const b = getBookByIdx(idx); if(!b) return;
+  b[field] = val.trim()||null;
+  debouncedSave(b);
+}
+
+function toggleExpand(idx) {
+  const b = getBookByIdx(idx); if(!b) return;
+  expandedId = expandedId===b.id ? null : b.id;
+  render();
+}
+
+function promoteRec(idx) {
+  if(!isOwner) { showLogin(); return; }
+  const b = getBookByIdx(idx); if(!b) return;
+  b.isRec=false; saveBook(b); render();
+}
+
+function setStatus(idx, val) {
+  if(!isOwner) { showLogin(); return; }
+  const b = getBookByIdx(idx); if(!b) return;
+  b.status=val; if(val==='read') b.isRec=false;
+  saveBook(b); render();
+}
+
+async function deleteRow(idx) {
+  if(!isOwner) return;
+  const b = getBookByIdx(idx); if(!b) return;
+  if(expandedId===b.id) expandedId=null;
+  books=books.filter(x=>x.id!==b.id); render();
+  await deleteBook(b.id);
+}
+
+async function addBook() {
+  if(!isOwner) return;
+  const b={id:null,title:null,author:null,age:null,oliver:null,jacob:null,status:"notyet",recBy:null,recNote:null,boosts:0,isRec:false,oliverNote:null,jacobNote:null};
+  books.push(b); render();
+  await insertBook(b); render();
+}
+
+async function boost(idx) {
+  const b = getBookByIdx(idx); if(!b) return;
+  if(boostedIds.has(b.id)){b.boosts=Math.max(0,b.boosts-1);boostedIds.delete(b.id);}
+  else{b.boosts++;boostedIds.add(b.id);}
+  localStorage.setItem('rl_boosted',JSON.stringify([...boostedIds]));
+  render(); await saveBook(b);
+}
+
+async function submitRec() {
+  const title=document.getElementById('rec-title').value.trim();
+  if(!title){document.getElementById('rec-title').focus();return;}
+  const b={id:null,title,author:document.getElementById('rec-author').value.trim()||null,
+    age:null,oliver:null,jacob:null,status:'notyet',
+    recBy:document.getElementById('rec-name').value.trim()||null,
+    recNote:document.getElementById('rec-note').value.trim()||null,
+    boosts:0,isRec:true,oliverNote:null,jacobNote:null};
+  const btn=document.getElementById('rec-btn');
+  btn.textContent='Saving…'; btn.disabled=true;
+  try {
+    books.push(b); await insertBook(b);
+    ['rec-title','rec-author','rec-name','rec-note'].forEach(id=>document.getElementById(id).value='');
+    btn.textContent='✓ Added to the list!'; btn.style.background='#3B6D11'; btn.style.borderColor='#3B6D11';
+    setTimeout(()=>{btn.innerHTML='📬 Submit recommendation';btn.style.background='#f59e0b';btn.style.borderColor='#f59e0b';btn.disabled=false;},2000);
+    render();
+  } catch(e) {
+    books=books.filter(x=>x!==b);
+    btn.textContent='Error — try again'; btn.disabled=false;
+    setTimeout(()=>{btn.textContent='Submit recommendation';btn.className='btn-primary';},2000);
+  }
+}
+
+// ---- Render ----
+function starsHtml(val, rowIdx, field) {
+  const canEdit = isOwner;
+  let h='<div style="display:flex;gap:1px;">';
+  for(let i=1;i<=5;i++){
+    const filled=i<=(val||0);
+    if(canEdit){
+      h+=`<span class="star editable${filled?' filled':''}" onclick="setStar(${rowIdx},'${field}',${i})" onmouseover="hoverStars(this,${i})" onmouseout="unhoverStars(this,${rowIdx},'${field}')">★</span>`;
+    } else {
+      h+=`<span class="star${filled?' filled':''}">★</span>`;
+    }
+  }
+  return h+'</div>';
+}
+function dimStars(){return '<div style="display:flex;gap:1px;">'+'<span class="star dim">★</span>'.repeat(5)+'</div>';}
+
+function makeExpandPanel(b, rowIdx) {
+  const esc=s=>s?(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'):'';
+  const canEdit = isOwner;
+  const taStyle='width:100%;font-size:13px;border:0.5px solid #e2e8f0;border-radius:6px;padding:6px 8px;background:#fff;color:#1e293b;outline:none;resize:vertical;min-height:56px;';
+  const isMobilePanel = window.innerWidth < 600;
+  const noteBlock = (field, label, color, val) => {
+    // Guests: only show if there's content
+    if(!canEdit) {
+      if(!val) return null; // hide empty boxes for guests
+      return `<div style="font-size:13px;color:#1e293b;line-height:1.55;">${esc(val)}</div>`;
+    }
+    const taId = 'ta-'+rowIdx+'-'+field;
+    return `<div style="position:relative;">
+      <textarea id="${taId}" placeholder="${label}'s review…" style="${taStyle}" oninput="showSaveBtn('${taId}-btn')">${esc(val||'')}</textarea>
+      <div id="${taId}-btn" style="display:none;margin-top:6px;">
+        <button onclick="saveNoteFromTA('${taId}',${rowIdx},'${field}')" style="background:#185FA5;color:#fff;border-color:#185FA5;font-size:12px;padding:5px 14px;">
+          <i class='ti ti-device-floppy' style='font-size:12px;'></i> Save note
+        </button>
+        <span id="${taId}-saved" style="display:none;font-size:12px;color:#3B6D11;margin-left:8px;"><i class='ti ti-check'></i> Saved!</span>
+      </div>
+    </div>`;
+  };
+  const oliverTA = noteBlock('oliverNote','Oliver','#185FA5',b.oliverNote);
+  const jacobTA  = noteBlock('jacobNote','Jacob','#378ADD',b.jacobNote);
+  const recSection=(b.recBy||b.recNote)?`
+    <div class="rec-note-block">
+      <div class="comment-label" style="color:#185FA5;"><i class="ti ti-bookmark" style="font-size:13px;"></i> Recommended by ${esc(b.recBy)||'a friend'}</div>
+      <div style="font-size:13px;color:#1e293b;line-height:1.55;">${b.recNote?esc(b.recNote):'<em style="color:#94a3b8;">No note left.</em>'}</div>
+    </div>`:'';
+  // Build note blocks — skip null ones (guests with no content)
+  const oliverBlock = oliverTA ? `<div class="comment-block">
+    <div class="comment-label"><i class="ti ti-message-circle" style="font-size:13px;color:#185FA5;"></i> Oliver's thoughts</div>
+    ${oliverTA}
+  </div>` : '';
+  const jacobBlock = jacobTA ? `<div class="comment-block">
+    <div class="comment-label"><i class="ti ti-message-circle" style="font-size:13px;color:#378ADD;"></i> Jacob's thoughts</div>
+    ${jacobTA}
+  </div>` : '';
+  const noteGrid = (oliverBlock||jacobBlock) ? `<div style="display:grid;grid-template-columns:${isMobilePanel||(!oliverBlock||!jacobBlock)?'1fr':'1fr 1fr'};gap:10px;">${oliverBlock}${jacobBlock}</div>` : '';
+
+  return `<div class="expand-panel">
+    ${noteGrid}
+    ${recSection}
+  </div>`;
+}
+
+function render() {
+  const fSt=document.getElementById('filter-status').value;
+  const fRa=document.getElementById('filter-rating').value;
+  const fAg=document.getElementById('filter-age').value;
+  const sort=document.getElementById('sort-by').value;
+
+  const active=books.filter(b=>!b.isRec);
+  const pending=books.filter(b=>b.isRec);
+
+  const searchEl = document.getElementById('search-input');
+  const searchQ = searchEl ? searchEl.value.trim().toLowerCase() : '';
+
+  function applyFS(arr){
+    let f=arr.filter(b=>{
+      if(fSt!=='all'&&b.status!==fSt)return false;
+      if(fRa!=='all'){const m=parseInt(fRa);if((b.oliver||0)<m&&(b.jacob||0)<m)return false;}
+      if(fAg!=='all'&&(b.age||'')!==parseInt(fAg))return false;
+      if(searchQ){
+        const hay=(b.title||'').toLowerCase()+(b.author||'').toLowerCase()+(b.recBy||'').toLowerCase();
+        if(!hay.includes(searchQ))return false;
+      }
+      return true;
+    });
+    if(sort==='oliver')f.sort((a,b)=>(b.oliver||0)-(a.oliver||0));
+    else if(sort==='jacob')f.sort((a,b)=>(b.jacob||0)-(a.jacob||0));
+    else if(sort==='boosts')f.sort((a,b)=>b.boosts-a.boosts);
+
+    else if(sort==='age')f.sort((a,b)=>(a.age||99)-(b.age||99));
+    else if(sort==='title')f.sort((a,b)=>(a.title||'').localeCompare(b.title||''));
+    return f;
+  }
+
+  const sortedActive=applyFS(active);
+  let sortedPending=sort?applyFS(pending):[...pending].sort((a,b)=>b.boosts-a.boosts);
+  if(fSt==='read'||fSt==='dnf') sortedPending=[];
+
+  _renderedRows=[];
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML='';
+  let rowNum=0;
+
+  function makeRow(b, isRecRow) {
+    const rowIdx=_renderedRows.length;
+    _renderedRows.push(b);
+    rowNum++;
+    const isOpen=expandedId===b.id;
+    const hasNotes=b.oliverNote||b.jacobNote||b.recNote;
+    const noteDot=hasNotes?`<span style="width:6px;height:6px;border-radius:50%;background:#378ADD;display:inline-block;flex-shrink:0;"></span>`:'';
+    // On mobile, stack author under title to save column space
+    const isMobile = window.innerWidth < 700;
+    const titleDisplay = b.title || '<span style="color:#94a3b8;font-style:italic;">Add title…</span>';
+    const authorDisplay = b.author || '';
+    const stackedTitle = isMobile && authorDisplay
+      ? `<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;${isRecRow?'font-style:italic;':''}">${titleDisplay}<br><span style="font-size:11px;color:#64748b;font-style:normal;">${authorDisplay}</span></span>`
+      : `<span style="flex:1;word-break:break-word;${isRecRow?'font-style:italic;':''}">${titleDisplay}</span>`;
+
+    const titleInner=`${stackedTitle}${noteDot}<i class="ti ti-chevron-right expand-icon"></i>`;
+
+    const tr=document.createElement('tr');
+    if(isRecRow) tr.classList.add('is-rec');
+
+    const oliverCell=isRecRow?dimStars():starsHtml(b.oliver,rowIdx,'oliver');
+    const jacobCell=isRecRow?dimStars():starsHtml(b.jacob,rowIdx,'jacob');
+
+    const statusCell=isRecRow
+      ?(isOwner
+        ?`<span class="status-badge badge-notyet clickable" onclick="promoteRec(${rowIdx})">Not yet read</span>`
+        :`<span class="status-badge badge-notyet">Not yet read</span>`)
+      :(isOwner
+        ?`<select onchange="setStatus(${rowIdx},this.value)" style="width:100%;padding:3px 6px;font-size:12px;">
+            <option value="read"${b.status==='read'?' selected':''}>Read</option>
+            <option value="notyet"${b.status==='notyet'?' selected':''}>Not yet read</option>
+            <option value="dnf"${b.status==='dnf'?' selected':''}>Did not finish</option>
+          </select>`
+        :`<span class="status-badge badge-${b.status}">${b.status==='read'?'Read':b.status==='dnf'?'Did not finish':'Not yet read'}</span>`);
+
+    const recByCell=isOwner
+      ?(b.recBy
+        ?`<div class="cell-edit editable" style="font-size:12px;color:#3C3489;" onclick="editCell(${rowIdx},'recBy',this)">${b.recBy}</div>`
+        :`<div class="cell-edit editable empty" onclick="editCell(${rowIdx},'recBy',this)">—</div>`)
+      :(b.recBy?`<div style="font-size:12px;color:#3C3489;padding:3px 6px;">${b.recBy}</div>`:`<div style="padding:3px 6px;color:#94a3b8;">—</div>`);
+
+    const boosted=boostedIds.has(b.id);
+    const boostCell=`<button class="boost-btn${boosted?' boosted':''}" onclick="boost(${rowIdx})" style="${(!isRecRow&&b.boosts===0)?'opacity:0.3;':''}">
+      <i class="ti ti-arrow-up" style="font-size:12px;"></i><span>${b.boosts}</span></button>`;
+
+    const authorEdit=isOwner&&!isRecRow
+      ?`<div class="cell-edit editable${b.author?'':' empty'}" onclick="editCell(${rowIdx},'author',this)">${b.author||'Author…'}</div>`
+      :`<div style="padding:3px 6px;${b.author?'':'color:#94a3b8;'}">${b.author||'—'}</div>`;
+    const ageEdit=isOwner&&!isRecRow
+      ?`<div class="cell-edit editable${b.age?'':' empty'}" onclick="editCell(${rowIdx},'age',this)" style="text-align:center;">${b.age||'—'}</div>`
+      :`<div style="text-align:center;padding:3px 6px;${b.age?'':'color:#94a3b8;'}">${b.age||'—'}</div>`;
+    const deleteBtn=isOwner&&!isRecRow
+      ?`<button onclick="deleteRow(${rowIdx})" style="border:none;background:none;padding:2px;color:#e2e8f0;font-size:16px;line-height:1;" onmouseover="this.style.color='#E24B4A'" onmouseout="this.style.color='#e2e8f0'">×</button>`
+      :'';
+
+    tr.innerHTML=`
+      <td style="color:#94a3b8;font-size:12px;text-align:center;">${rowNum}</td>
+      <td><div class="title-cell${isOpen?' open':''}" onclick="toggleExpand(${rowIdx})">${titleInner}</div></td>
+      <td style="${isMobile?'display:none;':''}">${authorEdit}</td><td>${ageEdit}</td>
+      <td>${oliverCell}</td><td>${jacobCell}</td>
+      <td>${statusCell}</td><td>${recByCell}</td><td>${boostCell}</td>
+      <td>${deleteBtn}</td>`;
+    tbody.appendChild(tr);
+
+    if(isOpen){
+      const exTr=document.createElement('tr');
+      exTr.className='expanded-row';
+      const exTd=document.createElement('td');
+      exTd.colSpan=10;
+      exTd.innerHTML=makeExpandPanel(b, rowIdx);
+      exTr.appendChild(exTd);
+      tbody.appendChild(exTr);
+    }
+  }
+
+  sortedActive.forEach(b=>makeRow(b,false));
+  if(sortedPending.length>0){
+    const div=document.createElement('tr');
+    div.className='divider-row';
+    div.innerHTML=`<td colspan="10"><i class="ti ti-bookmark" style="font-size:12px;vertical-align:-1px;margin-right:4px;"></i>Recommended — ${isOwner?'click "Not yet read" to move up · ':''}${sortedPending.length} pending</td>`;
+    tbody.appendChild(div);
+    sortedPending.forEach(b=>makeRow(b,true));
+  }
+
+  const readCount=books.filter(b=>b.status==='read').length;
+  const toGoCount=books.filter(b=>b.status==='notyet'&&!b.isRec).length;
+  const recCount=books.filter(b=>b.isRec).length;
+  document.getElementById('header-stats').textContent=`${readCount} read · ${toGoCount} to go · ${recCount} recommendation${recCount!==1?'s':''}`;
+}
+
+function updateAgeFilter(){
+  const sel=document.getElementById('filter-age'),cur=sel.value;
+  const ages=[...new Set(books.map(b=>b.age).filter(Boolean))].sort((a,b)=>a-b);
+  sel.innerHTML='<option value="all">Any age</option>';
+  ages.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=`Age ${a}`;if(String(a)===cur)o.selected=true;sel.appendChild(o);});
+}
+
+function toggleHowto(){
+  const body = document.getElementById('howto-body');
+  const chevron = document.getElementById('howto-chevron');
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  chevron.style.transform = open ? '' : 'rotate(180deg)';
+  localStorage.setItem('rl_howto', open ? 'closed' : 'open');
+}
+// Restore howto state
+(function(){
+  if(localStorage.getItem('rl_howto') === 'open'){
+    const body = document.getElementById('howto-body');
+    const chevron = document.getElementById('howto-chevron');
+    if(body){ body.style.display='block'; chevron.style.transform='rotate(180deg)'; }
+  }
+})();
+
+function switchTab(tab){
+  document.getElementById('layout').className='layout show-'+tab;
+  document.getElementById('tab-main').className='tab-btn'+(tab==='main'?' active':'');
+  document.getElementById('tab-side').className='tab-btn'+(tab==='side'?' active':'');
+}
+
+async function subscribeEmail(){
+  const email = document.getElementById('sub-email').value.trim();
+  const subAll = document.getElementById('sub-all').checked;
+  const subRec = document.getElementById('sub-rec').checked;
+  const btn = document.getElementById('sub-btn');
+  const msg = document.getElementById('sub-msg');
+
+  if(!email || !email.includes('@')){
+    msg.style.display='block';
+    msg.style.color='#E24B4A';
+    msg.textContent='Please enter a valid email address.';
+    return;
+  }
+  if(!subAll && !subRec){
+    msg.style.display='block';
+    msg.style.color='#E24B4A';
+    msg.textContent='Please select at least one notification type.';
+    return;
+  }
+
+  btn.textContent='Saving…'; btn.disabled=true;
+  try {
+    // Check if already subscribed
+    const existing = await sbFetch('subscribers?email=eq.'+encodeURIComponent(email));
+    if(existing && existing.length > 0){
+      // Update preferences
+      await sbFetch('subscribers?email=eq.'+encodeURIComponent(email), {
+        method:'PATCH',
+        body: JSON.stringify({notify_all: subAll, notify_rec: subRec}),
+        prefer:'return=minimal'
+      });
+      msg.style.display='block';
+      msg.style.color='#3B6D11';
+      msg.textContent='✓ Your preferences have been updated!';
+    } else {
+      await sbFetch('subscribers', {
+        method:'POST',
+        body: JSON.stringify({email, notify_all: subAll, notify_rec: subRec})
+      });
+      msg.style.display='block';
+      msg.style.color='#3B6D11';
+      msg.textContent='✓ Subscribed! We\'ll be in touch when we post new reviews.';
+    }
+    document.getElementById('sub-email').value='';
+    btn.innerHTML='<i class="ti ti-check" style="font-size:13px;"></i> Subscribed!';
+    btn.style.background='#3B6D11';
+    btn.style.borderColor='#3B6D11';
+    setTimeout(()=>{
+      btn.innerHTML='<i class="ti ti-bell" style="font-size:13px;"></i> Subscribe for updates';
+      btn.style.background='#185FA5';
+      btn.style.borderColor='#185FA5';
+      btn.disabled=false;
+    }, 3000);
+  } catch(e){
+    msg.style.display='block';
+    msg.style.color='#E24B4A';
+    msg.textContent='Something went wrong — please try again.';
+    btn.innerHTML='<i class="ti ti-bell" style="font-size:13px;"></i> Subscribe for updates';
+    btn.disabled=false;
+  }
+}
+
+function exportCSV(){
+  const sl={read:'Read',notyet:'Not yet read',dnf:'Did not finish'};
+  const st=n=>n?'★'.repeat(n):'';
+  const esc=v=>v==null?'':('"'+String(v).replace(/"/g,'""')+'"');
+  const rows=[['Title','Author','Age Read','Oliver Rating','Jacob Rating','Status','Recommended By','Oliver Notes','Jacob Notes','Boosts'].join(',')];
+  books.forEach(b=>rows.push([esc(b.title),esc(b.author),esc(b.age),esc(st(b.oliver)),esc(st(b.jacob)),esc(sl[b.status]||b.status),esc(b.recBy),esc(b.oliverNote),esc(b.jacobNote),esc(b.boosts||0)].join(',')));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'}));
+  a.download='reading-list-'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+}
+
+// Poll every 30s — paused while user is typing in any field
+let userIsTyping = false;
+let typingTimer = null;
+document.addEventListener('focusin', e => {
+  if(e.target.tagName==='TEXTAREA' || e.target.tagName==='INPUT') {
+    userIsTyping = true;
+    clearTimeout(typingTimer);
+  }
+});
+document.addEventListener('focusout', e => {
+  if(e.target.tagName==='TEXTAREA' || e.target.tagName==='INPUT') {
+    // Wait 3s after leaving a field before re-enabling polling
+    typingTimer = setTimeout(() => { userIsTyping = false; }, 3000);
+  }
+});
+setInterval(async()=>{
+  if(userIsTyping) return;
+  try{
+    const data=await sbFetch('books?order=is_rec.asc,updated_at.asc');
+    if(data){books=data.map(dbToBook);updateAgeFilter();render();}
+  }catch(e){}
+},30000);
+
+loadAll();
+</script>
+</body>
+</html>

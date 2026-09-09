@@ -65,7 +65,7 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
 .side-panel{width:300px;flex-shrink:0;}
 .table-wrap{overflow:auto;flex:1;max-height:calc(100vh - 220px);}
 .mobile-tabs{display:none;gap:6px;}
-
+ 
   table th:nth-child(8), table td:nth-child(8){display:none;}
   /* Shrink age and boost columns */
   table th:nth-child(4), table td:nth-child(4){width:36px!important;}
@@ -162,12 +162,12 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
 </style>
 </head>
 <body>
-
+ 
 <div id="loading-overlay" class="loading-overlay">
   <div class="spinner"></div>
   <div>Loading your reading list…</div>
 </div>
-
+ 
 <!-- Owner login modal -->
 <div id="login-modal" class="modal-bg" style="display:none;">
   <div class="modal">
@@ -181,7 +181,7 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
     </div>
   </div>
 </div>
-
+ 
 <div class="header-wrap">
   <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;">
     <div>
@@ -203,7 +203,7 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
     <span id="sync-status"></span>
   </div>
 </div>
-
+ 
 <div id="howto" style="background:#fff;border-bottom:0.5px solid #e2e8f0;padding:0;">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;cursor:pointer;user-select:none;" onclick="toggleHowto()">
     <span style="font-size:13px;font-weight:500;color:#185FA5;display:flex;align-items:center;gap:7px;">
@@ -247,7 +247,7 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
     </div>
   </div>
 </div>
-
+ 
 <div class="layout show-main" id="layout">
   <div class="panel main-panel">
     <div class="filters" style="flex-wrap:wrap;">
@@ -302,7 +302,7 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
       </table>
     </div>
   </div>
-
+ 
   <div class="panel side-panel" id="side-panel">
     <div style="padding:11px 14px;border-bottom:0.5px solid #fde68a;background:#fffbeb;display:flex;align-items:center;gap:8px;">
       <i class="ti ti-mail" style="font-size:15px;color:#d97706;"></i>
@@ -338,7 +338,7 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
         Click any <strong style="font-weight:500;">book title</strong> to read reviews and rec notes.<br><br>
         Recommended books sit at the bottom greyed out. The family can click <span class="status-badge badge-notyet" style="vertical-align:1px;">Not yet read</span> to move one up to the active list.
       </div>
-
+ 
       <div style="border-top:0.5px solid #e2e8f0;padding-top:16px;">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
           <i class="ti ti-bell" style="font-size:15px;color:#f59e0b;" aria-hidden="true"></i>
@@ -366,7 +366,7 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
     </div>
   </div>
 </div>
-
+ 
 <!-- Owner bar (shown when logged in) -->
 <div class="owner-bar" id="owner-bar" style="display:none;">
   <div class="owner-pill">
@@ -375,24 +375,24 @@ tr.expanded-row td{padding:0;background:#f8fafc;border-bottom:0.5px solid #cbd5e
     <button class="lock-btn" onclick="logout()">Lock</button>
   </div>
 </div>
-
+ 
 <!-- Login prompt (shown when logged out) -->
 <div class="owner-bar" id="guest-bar">
   <button onclick="showLogin()" style="background:#fff;border-color:#cbd5e1;font-size:12px;padding:8px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.1);display:flex;align-items:center;gap:6px;">
     <i class="ti ti-lock" style="font-size:13px;color:#64748b;"></i> Family login
   </button>
 </div>
-
+ 
 <button class="export-btn" onclick="exportCSV()" title="Download full list as spreadsheet">
   <i class="ti ti-table-export" style="font-size:15px;"></i> Export CSV
 </button>
-
+ 
 <script>
 const SUPABASE_URL = 'https://fyggpjsodfpdqfskcbtg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5Z2dwanNvZGZwZHFmc2tjYnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTI2NjgsImV4cCI6MjA5NTQ2ODY2OH0.2snOi-YFXAH8EtUAQG2tZ7KyRoN8IQhpEpwz-l_jB3M';
 // Change this to whatever password you want!
 const OWNER_PASSWORD = 'chili';
-
+ 
 async function sbFetch(path, opts={}) {
   const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
     ...opts,
@@ -408,15 +408,15 @@ async function sbFetch(path, opts={}) {
   const txt = await res.text();
   return txt ? JSON.parse(txt) : null;
 }
-
+ 
 function setSyncStatus(state, msg) {
   document.getElementById('sync-status').innerHTML =
     `<span class="sync-dot ${state}"></span><span style="font-size:11px;">${msg}</span>`;
 }
-
+ 
 // ---- Auth ----
 let isOwner = sessionStorage.getItem('rl_owner') === '1';
-
+ 
 function updateOwnerUI() {
   document.getElementById('owner-bar').style.display = isOwner ? 'flex' : 'none';
   document.getElementById('guest-bar').style.display = isOwner ? 'none' : 'flex';
@@ -436,7 +436,7 @@ function checkPw() {
   }
 }
 function logout() { isOwner=false; sessionStorage.removeItem('rl_owner'); updateOwnerUI(); }
-
+ 
 // ---- Seed data ----
 const SEED_BOOKS = [
   {title:"Forward",author:"Veronica Roth",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
@@ -510,13 +510,13 @@ const SEED_BOOKS = [
   {title:"Beowulf: A Graphic Novel",author:"Gareth Hinds",age:10,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
   {title:"In the Footsteps of Crazy Horse",author:"Joseph Marshall III",age:9,oliver:null,jacob:null,status:"read",rec_by:null,rec_note:null,boosts:0,is_rec:false,oliver_note:null,jacob_note:null},
 ];
-
+ 
 // ---- State ----
 let books = [];
 let expandedId = null;
 let boostedIds = new Set(JSON.parse(localStorage.getItem('rl_boosted')||'[]'));
 let saveTimer = null;
-
+ 
 // ---- DB helpers ----
 function dbToBook(r) {
   return { id:r.id, title:r.title, author:r.author, age:r.age,
@@ -531,7 +531,7 @@ function bookToDb(b) {
     is_rec:b.isRec||false, oliver_note:b.oliverNote, jacob_note:b.jacobNote,
     isbn:b.isbn||null, updated_at:new Date().toISOString() };
 }
-
+ 
 async function loadAll() {
   try {
     const data = await sbFetch('books?order=is_rec.asc,updated_at.asc');
@@ -552,11 +552,17 @@ async function loadAll() {
       '<div style="font-size:15px;color:#E24B4A;text-align:center;">Could not connect.<br>Check your internet connection.</div>';
   }
 }
-
+ 
 async function saveBook(b) {
   setSyncStatus('saving','Saving…');
   try {
-    await sbFetch('books?id=eq.'+b.id, {method:'PATCH', body:JSON.stringify(bookToDb(b)), prefer:'return=minimal'});
+    if(!b.id) {
+      // Not yet inserted — insert now and store the returned id
+      const r = await sbFetch('books', {method:'POST', body:JSON.stringify(bookToDb(b))});
+      if(r&&r[0]) b.id = r[0].id;
+    } else {
+      await sbFetch('books?id=eq.'+b.id, {method:'PATCH', body:JSON.stringify(bookToDb(b)), prefer:'return=minimal'});
+    }
     setSyncStatus('ok','Saved');
   } catch(e) { setSyncStatus('err','Save failed'); }
 }
@@ -579,13 +585,13 @@ async function deleteBook(id) {
     setSyncStatus('ok','Saved');
   } catch(e) { setSyncStatus('err','Save failed'); }
 }
-
+ 
 // ---- Use row index to avoid UUID-in-onclick issues ----
 // All onclick handlers use data-idx attributes and delegate via tbody click
-
+ 
 function getBookByIdx(idx) { return _renderedRows[parseInt(idx)]; }
 let _renderedRows = []; // maps render-index → book object
-
+ 
 // ---- UI Actions ----
 function setStar(idx, field, val) {
   if(!isOwner) { showLogin(); return; }
@@ -596,7 +602,7 @@ function setStar(idx, field, val) {
 }
 function hoverStars(el,n){Array.from(el.parentElement.children).forEach((s,i)=>{if(s.classList.contains('editable'))s.style.color=i<n?'#BA7517':'#B4B2A9';});}
 function unhoverStars(el,idx,field){const b=getBookByIdx(idx);const val=b?(b[field]||0):0;Array.from(el.parentElement.children).forEach((s,i)=>{s.style.color=i<val?'#BA7517':'#B4B2A9';});}
-
+ 
 function editCell(idx, field, el) {
   if(!isOwner) { showLogin(); return; }
   const b = getBookByIdx(idx); if(!b) return;
@@ -613,12 +619,12 @@ function editCell(idx, field, el) {
   inp.addEventListener('blur',commit);
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();});
 }
-
+ 
 function showSaveBtn(btnId) {
   const btn = document.getElementById(btnId);
   if(btn) btn.style.display='block';
 }
-
+ 
 function saveNoteFromTA(taId, idx, field) {
   const ta = document.getElementById(taId);
   if(!ta) return;
@@ -628,39 +634,39 @@ function saveNoteFromTA(taId, idx, field) {
   const savedMsg = document.getElementById(taId+'-saved');
   if(savedMsg){ savedMsg.style.display='inline'; setTimeout(()=>{ savedMsg.style.display='none'; }, 2000); }
 }
-
+ 
 function saveIsbn(idx, val) {
   if(!isOwner) return;
   const b = getBookByIdx(idx); if(!b) return;
   b.isbn = val.trim().replace(/[^0-9X]/gi,'') || null;
   debouncedSave(b);
 }
-
+ 
 function saveNote(idx, field, val) {
   const b = getBookByIdx(idx); if(!b) return;
   b[field] = val.trim()||null;
   debouncedSave(b);
 }
-
+ 
 function toggleExpand(idx) {
   const b = getBookByIdx(idx); if(!b) return;
   expandedId = expandedId===b.id ? null : b.id;
   render();
 }
-
+ 
 function promoteRec(idx) {
   if(!isOwner) { showLogin(); return; }
   const b = getBookByIdx(idx); if(!b) return;
   b.isRec=false; saveBook(b); render();
 }
-
+ 
 function setStatus(idx, val) {
   if(!isOwner) { showLogin(); return; }
   const b = getBookByIdx(idx); if(!b) return;
   b.status=val; if(val==='read') b.isRec=false;
   saveBook(b); render();
 }
-
+ 
 async function deleteRow(idx) {
   if(!isOwner) return;
   const b = getBookByIdx(idx); if(!b) return;
@@ -668,14 +674,15 @@ async function deleteRow(idx) {
   books=books.filter(x=>x.id!==b.id); render();
   await deleteBook(b.id);
 }
-
+ 
 async function addBook() {
   if(!isOwner) return;
   const b={id:null,title:null,author:null,age:null,oliver:null,jacob:null,status:"notyet",recBy:null,recNote:null,boosts:0,isRec:false,oliverNote:null,jacobNote:null,isbn:null};
-  books.push(b); render();
-  await insertBook(b); render();
+  books.push(b);
+  render();
+  // saveBook will auto-insert on first edit since id is null
 }
-
+ 
 async function boost(idx) {
   const b = getBookByIdx(idx); if(!b) return;
   if(boostedIds.has(b.id)){b.boosts=Math.max(0,b.boosts-1);boostedIds.delete(b.id);}
@@ -683,7 +690,7 @@ async function boost(idx) {
   localStorage.setItem('rl_boosted',JSON.stringify([...boostedIds]));
   render(); await saveBook(b);
 }
-
+ 
 async function submitRec() {
   const title=document.getElementById('rec-title').value.trim();
   if(!title){document.getElementById('rec-title').focus();return;}
@@ -706,7 +713,7 @@ async function submitRec() {
     setTimeout(()=>{btn.textContent='Submit recommendation';btn.className='btn-primary';},2000);
   }
 }
-
+ 
 // ---- Render ----
 function starsHtml(val, rowIdx, field) {
   const canEdit = isOwner;
@@ -722,7 +729,7 @@ function starsHtml(val, rowIdx, field) {
   return h+'</div>';
 }
 function dimStars(){return '<div style="display:flex;gap:1px;">'+'<span class="star dim">★</span>'.repeat(5)+'</div>';}
-
+ 
 function makeExpandPanel(b, rowIdx) {
   const esc=s=>s?(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'):'';
   const canEdit = isOwner;
@@ -766,7 +773,7 @@ function makeExpandPanel(b, rowIdx) {
     </div>
     ${b.isbn ? `<a href="https://bookshop.org/a/124690/${b.isbn}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:8px;background:#f59e0b;color:#fff;border:none;font-size:12px;font-weight:500;text-decoration:none;white-space:nowrap;" onmouseover="this.style.background='#d97706'" onmouseout="this.style.background='#f59e0b'"><i class='ti ti-external-link' style='font-size:12px;' aria-hidden='true'></i> Get it</a>` : ''}
   </div>` : (b.isbn ? `<div style="padding:4px 0;"><a href="https://bookshop.org/a/124690/${b.isbn}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:8px;background:#f59e0b;color:#fff;font-size:13px;font-weight:500;text-decoration:none;" onmouseover="this.style.background='#d97706'" onmouseout="this.style.background='#f59e0b'"><i class='ti ti-book' style='font-size:13px;' aria-hidden='true'></i> Get it on Bookshop.org</a></div>` : '');
-
+ 
   const oliverBlock = oliverTA ? `<div class="comment-block">
     <div class="comment-label"><i class="ti ti-message-circle" style="font-size:13px;color:#185FA5;"></i> Oliver's thoughts</div>
     ${oliverTA}
@@ -776,26 +783,26 @@ function makeExpandPanel(b, rowIdx) {
     ${jacobTA}
   </div>` : '';
   const noteGrid = (oliverBlock||jacobBlock) ? `<div style="display:grid;grid-template-columns:${isMobilePanel||(!oliverBlock||!jacobBlock)?'1fr':'1fr 1fr'};gap:10px;">${oliverBlock}${jacobBlock}</div>` : '';
-
+ 
   return `<div class="expand-panel">
     ${isbnBlock}
     ${noteGrid}
     ${recSection}
   </div>`;
 }
-
+ 
 function render() {
   const fSt=document.getElementById('filter-status').value;
   const fRa=document.getElementById('filter-rating').value;
   const fAg=document.getElementById('filter-age').value;
   const sort=document.getElementById('sort-by').value;
-
+ 
   const active=books.filter(b=>!b.isRec);
   const pending=books.filter(b=>b.isRec);
-
+ 
   const searchEl = document.getElementById('search-input');
   const searchQ = searchEl ? searchEl.value.trim().toLowerCase() : '';
-
+ 
   function applyFS(arr){
     let f=arr.filter(b=>{
       if(fSt!=='all'&&b.status!==fSt)return false;
@@ -810,21 +817,21 @@ function render() {
     if(sort==='oliver')f.sort((a,b)=>(b.oliver||0)-(a.oliver||0));
     else if(sort==='jacob')f.sort((a,b)=>(b.jacob||0)-(a.jacob||0));
     else if(sort==='boosts')f.sort((a,b)=>b.boosts-a.boosts);
-
+ 
     else if(sort==='age')f.sort((a,b)=>(a.age||99)-(b.age||99));
     else if(sort==='title')f.sort((a,b)=>(a.title||'').localeCompare(b.title||''));
     return f;
   }
-
+ 
   const sortedActive=applyFS(active);
   let sortedPending=sort?applyFS(pending):[...pending].sort((a,b)=>b.boosts-a.boosts);
   if(fSt==='read'||fSt==='dnf') sortedPending=[];
-
+ 
   _renderedRows=[];
   const tbody=document.getElementById('tbody');
   tbody.innerHTML='';
   let rowNum=0;
-
+ 
   function makeRow(b, isRecRow) {
     const rowIdx=_renderedRows.length;
     _renderedRows.push(b);
@@ -839,15 +846,15 @@ function render() {
     const stackedTitle = isMobile && authorDisplay
       ? `<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;${isRecRow?'font-style:italic;':''}">${titleDisplay}<br><span style="font-size:11px;color:#64748b;font-style:normal;">${authorDisplay}</span></span>`
       : `<span style="flex:1;word-break:break-word;${isRecRow?'font-style:italic;':''}">${titleDisplay}</span>`;
-
+ 
     const titleInner=`${stackedTitle}${noteDot}<i class="ti ti-chevron-right expand-icon"></i>`;
-
+ 
     const tr=document.createElement('tr');
     if(isRecRow) tr.classList.add('is-rec');
-
+ 
     const oliverCell=isRecRow?dimStars():starsHtml(b.oliver,rowIdx,'oliver');
     const jacobCell=isRecRow?dimStars():starsHtml(b.jacob,rowIdx,'jacob');
-
+ 
     const statusCell=isRecRow
       ?(isOwner
         ?`<span class="status-badge badge-notyet clickable" onclick="promoteRec(${rowIdx})">Not yet read</span>`
@@ -859,17 +866,17 @@ function render() {
             <option value="dnf"${b.status==='dnf'?' selected':''}>Did not finish</option>
           </select>`
         :`<span class="status-badge badge-${b.status}">${b.status==='read'?'Read':b.status==='dnf'?'Did not finish':'Not yet read'}</span>`);
-
+ 
     const recByCell=isOwner
       ?(b.recBy
         ?`<div class="cell-edit editable" style="font-size:12px;color:#3C3489;" onclick="editCell(${rowIdx},'recBy',this)">${b.recBy}</div>`
         :`<div class="cell-edit editable empty" onclick="editCell(${rowIdx},'recBy',this)">—</div>`)
       :(b.recBy?`<div style="font-size:12px;color:#3C3489;padding:3px 6px;">${b.recBy}</div>`:`<div style="padding:3px 6px;color:#94a3b8;">—</div>`);
-
+ 
     const boosted=boostedIds.has(b.id);
     const boostCell=`<button class="boost-btn${boosted?' boosted':''}" onclick="boost(${rowIdx})" style="${(!isRecRow&&b.boosts===0)?'opacity:0.3;':''}">
       <i class="ti ti-arrow-up" style="font-size:12px;"></i><span>${b.boosts}</span></button>`;
-
+ 
     const authorEdit=isOwner&&!isRecRow
       ?`<div class="cell-edit editable${b.author?'':' empty'}" onclick="editCell(${rowIdx},'author',this)">${b.author||'Author…'}</div>`
       :`<div style="padding:3px 6px;${b.author?'':'color:#94a3b8;'}">${b.author||'—'}</div>`;
@@ -879,7 +886,7 @@ function render() {
     const deleteBtn=isOwner&&!isRecRow
       ?`<button onclick="deleteRow(${rowIdx})" style="border:none;background:none;padding:2px;color:#e2e8f0;font-size:16px;line-height:1;" onmouseover="this.style.color='#E24B4A'" onmouseout="this.style.color='#e2e8f0'">×</button>`
       :'';
-
+ 
     tr.innerHTML=`
       <td style="color:#94a3b8;font-size:12px;text-align:center;">${rowNum}</td>
       <td><div class="title-cell${isOpen?' open':''}" onclick="toggleExpand(${rowIdx})">${titleInner}</div></td>
@@ -889,7 +896,7 @@ function render() {
       <td>${b.isbn ? `<a href="https://bookshop.org/a/124690/${b.isbn}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;background:#fef3c7;color:#92400e;border:0.5px solid #fcd34d;font-size:11px;font-weight:500;text-decoration:none;white-space:nowrap;" onmouseover="this.style.background='#fde68a'" onmouseout="this.style.background='#fef3c7'"><i class='ti ti-book' style='font-size:11px;' aria-hidden='true'></i> Get it</a>` : ''}</td>
       <td>${deleteBtn}</td>`;
     tbody.appendChild(tr);
-
+ 
     if(isOpen){
       const exTr=document.createElement('tr');
       exTr.className='expanded-row';
@@ -900,7 +907,7 @@ function render() {
       tbody.appendChild(exTr);
     }
   }
-
+ 
   sortedActive.forEach(b=>makeRow(b,false));
   if(sortedPending.length>0){
     const div=document.createElement('tr');
@@ -909,20 +916,20 @@ function render() {
     tbody.appendChild(div);
     sortedPending.forEach(b=>makeRow(b,true));
   }
-
+ 
   const readCount=books.filter(b=>b.status==='read').length;
   const toGoCount=books.filter(b=>b.status==='notyet'&&!b.isRec).length;
   const recCount=books.filter(b=>b.isRec).length;
   document.getElementById('header-stats').textContent=`${readCount} read · ${toGoCount} to go · ${recCount} recommendation${recCount!==1?'s':''}`;
 }
-
+ 
 function updateAgeFilter(){
   const sel=document.getElementById('filter-age'),cur=sel.value;
   const ages=[...new Set(books.map(b=>b.age).filter(Boolean))].sort((a,b)=>a-b);
   sel.innerHTML='<option value="all">Any age</option>';
   ages.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=`Age ${a}`;if(String(a)===cur)o.selected=true;sel.appendChild(o);});
 }
-
+ 
 function toggleHowto(){
   const body = document.getElementById('howto-body');
   const chevron = document.getElementById('howto-chevron');
@@ -939,20 +946,20 @@ function toggleHowto(){
     if(body){ body.style.display='block'; chevron.style.transform='rotate(180deg)'; }
   }
 })();
-
+ 
 function switchTab(tab){
   document.getElementById('layout').className='layout show-'+tab;
   document.getElementById('tab-main').className='tab-btn'+(tab==='main'?' active':'');
   document.getElementById('tab-side').className='tab-btn'+(tab==='side'?' active':'');
 }
-
+ 
 async function subscribeEmail(){
   const email = document.getElementById('sub-email').value.trim();
   const subAll = document.getElementById('sub-all').checked;
   const subRec = document.getElementById('sub-rec').checked;
   const btn = document.getElementById('sub-btn');
   const msg = document.getElementById('sub-msg');
-
+ 
   if(!email || !email.includes('@')){
     msg.style.display='block';
     msg.style.color='#E24B4A';
@@ -965,7 +972,7 @@ async function subscribeEmail(){
     msg.textContent='Please select at least one notification type.';
     return;
   }
-
+ 
   btn.textContent='Saving…'; btn.disabled=true;
   try {
     // Check if already subscribed
@@ -1007,7 +1014,7 @@ async function subscribeEmail(){
     btn.disabled=false;
   }
 }
-
+ 
 function exportCSV(){
   const sl={read:'Read',notyet:'Not yet read',dnf:'Did not finish'};
   const st=n=>n?'★'.repeat(n):'';
@@ -1018,7 +1025,7 @@ function exportCSV(){
   a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'}));
   a.download='reading-list-'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
 }
-
+ 
 // Poll every 30s — paused while user is typing in any field
 let userIsTyping = false;
 let typingTimer = null;
@@ -1041,8 +1048,9 @@ setInterval(async()=>{
     if(data){books=data.map(dbToBook);updateAgeFilter();render();}
   }catch(e){}
 },30000);
-
+ 
 loadAll();
 </script>
 </body>
 </html>
+ 

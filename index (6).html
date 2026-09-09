@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Myths &amp; Martians</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Nunito,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#0B1B2B;background:#EDEFEB;min-height:100vh;}
+a{color:#14507F;}
+a:hover{color:#0B1B2B;}
+input,select,textarea,button{font-family:inherit;font-size:14px;}
+.mono{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#5E6B65;}
+.dsp{font-family:'Space Grotesk',system-ui,sans-serif;}
+input[type=text],input[type=email],input[type=password],textarea{border:1px solid #D8DDD9;border-radius:12px;padding:12px 14px;background:#fff;color:#0B1B2B;outline:none;width:100%;}
+input:focus,textarea:focus{border-color:#378ADD;box-shadow:0 0 0 3px #DCEAF8;}
+textarea{resize:vertical;min-height:64px;line-height:1.5;font-size:15px;}
+button{cursor:pointer;border:none;background:none;color:inherit;}
+.shell{max-width:1120px;margin:0 auto;padding:20px 16px 96px;}
+.card{background:#F7F8F6;border:1px solid #D8DDD9;border-radius:20px;overflow:hidden;box-shadow:0 18px 44px rgba(11,27,43,.12);}
+.hdr{background:#0B1B2B;padding:26px 32px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.hdr h1{font-family:'Space Grotesk',system-ui;font-weight:700;font-size:32px;letter-spacing:-.01em;color:#fff;line-height:1;}
+.hdr p{font-size:14px;color:#9FBBD4;margin-top:8px;}
+.btn-ghost{border:1px solid #33506B;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;color:#EAF2F8;text-decoration:none;display:inline-block;}
+.btn-ghost:hover{background:#16304a;color:#fff;}
+.btn-amber{background:#E8A33D;border-radius:10px;padding:10px 15px;font-size:13px;font-weight:800;color:#22160A;}
+.btn-amber:hover{background:#D8912A;}
+.btn-dark{background:#0B1B2B;color:#fff;border-radius:12px;padding:15px;font-size:16px;font-weight:800;width:100%;}
+.btn-dark:hover{background:#16304a;}
+.btn-plain{border:1px solid #D8DDD9;border-radius:12px;padding:15px 18px;font-size:15px;font-weight:700;color:#4C5A55;background:#fff;}
+.bar{background:#fff;border-bottom:1px solid #E4E8E4;padding:12px 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.seg{display:flex;flex:none;border:1px solid #D8DDD9;border-radius:999px;overflow:hidden;font-size:13px;font-weight:700;white-space:nowrap;background:#fff;}
+.seg button{padding:8px 15px;color:#4C5A55;}
+.seg button:hover{background:#F1F4F1;}
+.seg button.on{background:#0B1B2B;color:#fff;}
+.agebox{display:flex;flex:none;align-items:center;gap:4px;border:1px solid #D8DDD9;border-radius:999px;padding:4px 5px 4px 12px;background:#fff;white-space:nowrap;}
+.agebox button{padding:5px 9px;border-radius:999px;font-size:13px;font-weight:700;color:#4C5A55;}
+.agebox button.on{background:#0B1B2B;color:#fff;font-weight:800;}
+.searchwrap{margin-left:auto;position:relative;flex:1;min-width:150px;max-width:240px;}
+.searchwrap input{padding:8px 14px 8px 34px;border-radius:999px;font-size:13px;}
+.searchwrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;}
+.cols{padding:18px 32px 10px;display:grid;grid-template-columns:1fr 150px 150px 110px 56px;gap:16px;align-items:end;}
+.who{display:flex;align-items:center;gap:7px;}
+.dot{width:22px;height:22px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#0B1B2B;}
+.dot.o{background:#7EB6E4;}
+.dot.j{background:#8CCBA9;}
+.list{padding:0 32px 24px;display:flex;flex-direction:column;gap:8px;}
+.row{background:#fff;border:1px solid #E4E8E4;border-radius:14px;padding:14px 18px;display:grid;grid-template-columns:1fr 150px 150px 110px 56px;gap:16px;align-items:center;}
+.row.mine{border:2px solid #7EB6E4;}
+.row.rec{background:#FBFAF6;border:1px dashed #D8D3C2;grid-template-columns:1fr 300px 110px 56px;}
+.bk{display:flex;align-items:center;gap:12px;min-width:0;}
+.cov{width:34px;height:48px;flex:none;border-radius:3px;background:repeating-linear-gradient(45deg,#DDE4EA 0 5px,#CBD5DD 5px 10px);overflow:hidden;}
+.cov img{width:100%;height:100%;object-fit:cover;display:block;}
+.acwrap{position:relative;}
+.ac{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid #D8DDD9;border-radius:14px;box-shadow:0 14px 34px rgba(11,27,43,.18);overflow:hidden;z-index:20;max-height:280px;overflow-y:auto;}
+.ac button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;padding:10px 12px;border-bottom:1px solid #F1F4F1;}
+.ac button:last-child{border-bottom:none;}
+.ac button:hover{background:#F1F4F1;}
+.ac .th{width:30px;height:42px;flex:none;border-radius:2px;background:repeating-linear-gradient(45deg,#DDE4EA 0 4px,#CBD5DD 4px 8px);overflow:hidden;}
+.ac .th img{width:100%;height:100%;object-fit:cover;display:block;}
+.ac .t{font-size:14px;font-weight:700;color:#0B1B2B;line-height:1.2;}
+.ac .a{font-size:12px;color:#5E6B65;}
+.acnote{padding:10px 12px;font-size:12px;color:#5E6B65;}
+.bk h3{font-family:'Space Grotesk',system-ui;font-weight:600;font-size:17px;color:#0B1B2B;line-height:1.2;}
+.bk .meta{font-size:13px;color:#5E6B65;}
+.stars{font-size:17px;color:#BA7517;letter-spacing:1px;line-height:1.2;}
+.stars .off{color:#C9CEC9;}
+.qt{font-size:12px;color:#4C5A55;line-height:1.3;margin-top:3px;}
+.rate{background:#7EB6E4;border-radius:10px;padding:9px 10px;text-align:center;font-size:13px;font-weight:800;color:#0B1B2B;width:100%;}
+.rate:hover{background:#63A5DC;}
+.rate.j{background:#8CCBA9;}
+.rate.j:hover{background:#72BC94;}
+.hint{font-size:11px;color:#5E6B65;text-align:center;margin-top:4px;}
+.badge{display:inline-block;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:800;}
+.b-read{background:#E8F1DC;color:#33600E;}
+.b-dnf{background:#FAEEDA;color:#7A4708;}
+.b-notyet{background:#E6F1FB;color:#14507F;border:1px solid #85B7EB;}
+.boost{width:44px;height:44px;border:1px solid #D8DDD9;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;margin:0 auto;}
+.boost:hover{border-color:#378ADD;}
+.boost.on{border:2px solid #E8A33D;background:#FBF1DF;}
+.boost .arw{font-size:12px;color:#5E6B65;line-height:1;}
+.boost.on .arw{color:#8A5A0B;}
+.boost .n{font-size:13px;font-weight:800;color:#0B1B2B;}
+.divider{display:flex;align-items:center;gap:12px;padding:14px 4px 6px;}
+.divider .ln{flex:1;height:1px;background:#E4E8E4;}
+.recby{font-size:12px;font-weight:800;color:#8A5A0B;}
+.getit{display:inline-block;background:#FBF1DF;border:1px solid #EBD5A8;color:#7A4708;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:700;text-decoration:none;margin-top:4px;}
+.modal-bg{position:fixed;inset:0;background:rgba(11,27,43,.45);display:flex;align-items:center;justify-content:center;z-index:300;padding:16px;overflow-y:auto;}
+.sheet{background:#fff;border:1px solid #D8DDD9;border-radius:20px;box-shadow:0 24px 60px rgba(11,27,43,.24);width:540px;max-width:100%;overflow:hidden;margin:auto;}
+.sh-hd{padding:20px 24px;border-bottom:1px solid #E4E8E4;display:flex;align-items:center;gap:14px;}
+.sh-hd .cov{width:44px;height:62px;}
+.sh-sec{padding:20px 24px;border-bottom:1px solid #E4E8E4;}
+.sh-sec h4{font-family:'Space Grotesk',system-ui;font-weight:600;font-size:20px;color:#0B1B2B;}
+.starpick{display:flex;gap:8px;margin-top:12px;}
+.starpick button{flex:1;height:56px;border:1px solid #D8DDD9;border-radius:12px;background:#fff;font-size:26px;color:#C9CEC9;display:flex;align-items:center;justify-content:center;}
+.starpick button.lit{background:#FBF3E2;color:#BA7517;}
+.starpick button.cur{border:2px solid #BA7517;background:#F7E9CC;font-size:30px;}
+.pillrow{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.pill{border:1px solid #D8DDD9;border-radius:12px;padding:13px;text-align:center;font-size:14px;font-weight:700;color:#4C5A55;background:#fff;flex:1;min-width:96px;}
+.pill.on{border:2px solid #33600E;background:#E8F1DC;color:#33600E;font-weight:800;}
+.chip{border:1px solid #D8DDD9;border-radius:999px;padding:9px 14px;font-size:14px;font-weight:700;color:#4C5A55;background:#fff;}
+.chip.on{border:2px solid #14507F;background:#E6F1FB;color:#14507F;font-weight:800;}
+.chip.sm{padding:7px 12px;font-size:13px;}
+.sh-ft{padding:18px 24px 22px;background:#F7F8F6;border-top:1px solid #E4E8E4;display:flex;align-items:center;gap:12px;}
+.tag{display:inline-block;background:#E6F1FB;color:#14507F;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;margin:3px 3px 0 0;}
+.ownerbar{position:fixed;bottom:16px;left:16px;z-index:100;display:flex;gap:8px;align-items:center;}
+.ownerpill{background:#0B1B2B;color:#fff;border-radius:12px;padding:10px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:10px;box-shadow:0 6px 18px rgba(11,27,43,.25);}
+.lockbtn{background:rgba(255,255,255,.16);border-radius:8px;color:#fff;padding:4px 9px;font-size:11px;font-weight:700;}
+.exportbtn{position:fixed;bottom:16px;right:16px;z-index:100;background:#fff;border:1px solid #D8DDD9;border-radius:12px;padding:10px 14px;font-size:12px;font-weight:700;color:#4C5A55;box-shadow:0 6px 18px rgba(11,27,43,.12);}
+.loading{position:fixed;inset:0;background:#EDEFEB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:400;color:#14507F;font-size:15px;}
+.spin{width:32px;height:32px;border:3px solid #C7DBEF;border-top-color:#14507F;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.syncdot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;}
+.syncdot.ok{background:#7DD494;}.syncdot.saving{background:#E8A33D;}.syncdot.err{background:#E88A85;}
+@media(max-width:900px){
+  .shell{padding:12px 10px 96px;}
+  .hdr,.bar,.cols,.list{padding-left:16px;padding-right:16px;}
+  .hdr h1{font-size:26px;}
+  .cols{display:none;}
+  .row,.row.rec{grid-template-columns:1fr;gap:12px;}
+  .searchwrap{margin-left:0;max-width:none;flex:1 1 100%;}
+  .twin{display:flex;align-items:center;gap:10px;}
+  .twin .lbl{display:flex!important;}
+  .rate{width:auto;padding:11px 16px;}
+}
+.twin .lbl{display:none;align-items:center;gap:6px;font-size:13px;font-weight:800;min-width:78px;}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading"><div class="spin"></div><div>Loading the reading list…</div></div>
+
+<div class="shell">
+  <div class="card">
+    <div class="hdr">
+      <div>
+        <h1>Myths &amp; Martians</h1>
+        <p id="sub">See our picks, share yours — happy reading.</p>
+        <div style="font-size:12px;color:#7FA3C4;margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <span id="stats"></span><span id="sync"></span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <a class="btn-ghost" href="https://bookshop.org/shop/mythsandmartians" target="_blank" rel="noopener">Shop our picks</a>
+        <button class="btn-amber" onclick="openRec()">Recommend a book</button>
+      </div>
+    </div>
+
+    <div class="bar">
+      <div class="mono" style="flex:none;">Sort by</div>
+      <div class="seg" id="seg-sort">
+        <button data-sort="rating" class="on" onclick="setSort('rating')">★ Top rated</button>
+        <button data-sort="age" onclick="setSort('age')">Youngest first</button>
+        <button data-sort="boosts" onclick="setSort('boosts')">Most boosted</button>
+      </div>
+      <div class="agebox" id="agebox">
+        <div style="font-size:13px;font-weight:700;color:#5E6B65;">Age</div>
+        <div style="display:flex;gap:2px;" id="agepills"></div>
+      </div>
+      <div class="searchwrap">
+        <svg width="14" height="14" fill="none" stroke="#9AA5A0" stroke-width="2"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5 13 13"/></svg>
+        <input type="text" id="q" placeholder="Search…" oninput="render()">
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="mono">Book</div>
+      <div class="who"><div class="dot o">O</div><div style="font-size:13px;font-weight:800;">Oliver</div></div>
+      <div class="who"><div class="dot j">J</div><div style="font-size:13px;font-weight:800;">Jacob</div></div>
+      <div class="mono">Status</div>
+      <div class="mono" style="text-align:center;">Boost</div>
+    </div>
+
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<div class="ownerbar" id="ownerbar" style="display:none;">
+  <div class="ownerpill"><span>Editing as family</span><button class="lockbtn" onclick="logout()">Lock</button></div>
+</div>
+<div class="ownerbar" id="guestbar">
+  <button class="exportbtn" style="position:static;box-shadow:0 6px 18px rgba(11,27,43,.12);" onclick="showLogin()">Family login</button>
+</div>
+<button class="exportbtn" onclick="exportCSV()">Export CSV</button>
+
+<div id="modal"></div>
+
+<script>
+const SUPABASE_URL='https://fyggpjsodfpdqfskcbtg.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5Z2dwanNvZGZwZHFmc2tjYnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTI2NjgsImV4cCI6MjA5NTQ2ODY2OH0.2snOi-YFXAH8EtUAQG2tZ7KyRoN8IQhpEpwz-l_jB3M';
+const OWNER_PASSWORD='chili';
+
+async function sbFetch(path,opts={}){
+  const res=await fetch(SUPABASE_URL+'/rest/v1/'+path,{...opts,headers:{
+    'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json',
+    'Prefer':opts.prefer||'return=representation',...(opts.headers||{})}});
+  if(!res.ok){throw new Error(await res.text());}
+  const t=await res.text();return t?JSON.parse(t):null;
+}
+function setSync(state,msg){document.getElementById('sync').innerHTML='<span class="syncdot '+state+'"></span><span style="font-size:11px;">'+msg+'</span>';}
+const esc=s=>s==null?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ---------- reviews are stored in the existing oliver_note / jacob_note columns.
+   Tapped chips ride along on a first line: "@@ chip | chip" then the written line. ---------- */
+function parseNote(raw){
+  if(!raw) return {chips:[],text:''};
+  const s=String(raw);
+  if(s.startsWith('@@ ')){
+    const nl=s.indexOf('\n');
+    const head=nl===-1?s.slice(3):s.slice(3,nl);
+    return {chips:head.split('|').map(x=>x.trim()).filter(Boolean),text:nl===-1?'':s.slice(nl+1).trim()};
+  }
+  return {chips:[],text:s};
+}
+function encodeNote(chips,text){
+  const t=(text||'').trim();
+  if(chips&&chips.length) return '@@ '+chips.join(' | ')+(t?'\n'+t:'');
+  return t||null;
+}
+
+let isOwner=sessionStorage.getItem('rl_owner')==='1';
+let books=[], sortMode='rating', ageFilter='all';
+let boostedIds=new Set(JSON.parse(localStorage.getItem('rl_boosted')||'[]'));
+let saveTimer=null, _rows=[];
+const AGE_OPTS=[['all','Any'],[8,'8+'],[10,'10+'],[12,'12+']];
+const CHIPS=["Couldn't put it down","Made me laugh","Great ending","Scary (good scary)","Slow start","Tricky words","Learned something"];
+
+function dbToBook(r){return{id:r.id,title:r.title,author:r.author,age:r.age,oliver:r.oliver,jacob:r.jacob,
+  status:r.status||'read',recBy:r.rec_by,recNote:r.rec_note,boosts:r.boosts||0,isRec:r.is_rec||false,
+  oliverNote:r.oliver_note,jacobNote:r.jacob_note,isbn:r.isbn||null};}
+function bookToDb(b){return{title:b.title,author:b.author,age:b.age,oliver:b.oliver,jacob:b.jacob,status:b.status,
+  rec_by:b.recBy,rec_note:b.recNote,boosts:b.boosts||0,is_rec:b.isRec||false,oliver_note:b.oliverNote,
+  jacob_note:b.jacobNote,isbn:b.isbn||null,updated_at:new Date().toISOString()};}
+
+async function loadAll(){
+  try{
+    const data=await sbFetch('books?order=is_rec.asc,updated_at.asc');
+    books=(data||[]).map(dbToBook);
+    setSync('ok','Synced');
+    document.getElementById('loading').style.display='none';
+    updateOwnerUI();renderAgePills();render();
+  }catch(e){
+    setSync('err','Connection error');
+    document.getElementById('loading').innerHTML='<div style="color:#B4443F;text-align:center;font-size:15px;">Could not connect.<br>Check your internet connection.</div>';
+  }
+}
+async function saveBook(b){
+  setSync('saving','Saving…');
+  try{
+    if(!b.id){const r=await sbFetch('books',{method:'POST',body:JSON.stringify(bookToDb(b))});if(r&&r[0])b.id=r[0].id;}
+    else await sbFetch('books?id=eq.'+b.id,{method:'PATCH',body:JSON.stringify(bookToDb(b)),prefer:'return=minimal'});
+    setSync('ok','Saved');
+  }catch(e){setSync('err','Save failed');}
+}
+async function insertBook(b){
+  setSync('saving','Saving…');
+  try{const r=await sbFetch('books',{method:'POST',body:JSON.stringify(bookToDb(b))});if(r&&r[0])b.id=r[0].id;setSync('ok','Saved');}
+  catch(e){setSync('err','Save failed');throw e;}
+}
+
+/* ---------- auth ---------- */
+function updateOwnerUI(){
+  document.getElementById('ownerbar').style.display=isOwner?'flex':'none';
+  document.getElementById('guestbar').style.display=isOwner?'none':'flex';
+}
+function showLogin(){
+  document.getElementById('modal').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()">
+    <div class="sheet" style="width:360px;">
+      <div class="sh-sec" style="border-bottom:none;">
+        <h4>Family login</h4>
+        <div style="font-size:13px;color:#5E6B65;margin:6px 0 14px;">Enter the password to rate books and write reviews.</div>
+        <input type="password" id="pw" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+        <div id="pwerr" style="display:none;color:#B4443F;font-size:12px;margin-top:8px;">Wrong password — try again.</div>
+      </div>
+      <div class="sh-ft"><button class="btn-dark" onclick="checkPw()">Log in</button><button class="btn-plain" onclick="closeModal()">Cancel</button></div>
+    </div>
+  </div>`;
+  setTimeout(()=>document.getElementById('pw').focus(),50);
+}
+function checkPw(){
+  if(document.getElementById('pw').value===OWNER_PASSWORD){
+    isOwner=true;sessionStorage.setItem('rl_owner','1');closeModal();updateOwnerUI();render();
+  }else{document.getElementById('pwerr').style.display='block';document.getElementById('pw').value='';document.getElementById('pw').focus();}
+}
+function logout(){isOwner=false;sessionStorage.removeItem('rl_owner');updateOwnerUI();render();}
+function closeModal(){document.getElementById('modal').innerHTML='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ---------- toolbar ---------- */
+function setSort(m){
+  sortMode=m;
+  document.querySelectorAll('#seg-sort button').forEach(b=>b.classList.toggle('on',b.dataset.sort===m));
+  render();
+}
+function renderAgePills(){
+  document.getElementById('agepills').innerHTML=AGE_OPTS.map(([v,l])=>
+    `<button class="${String(ageFilter)===String(v)?'on':''}" onclick="setAge('${v}')">${l}</button>`).join('');
+}
+function setAge(v){ageFilter=v==='all'?'all':parseInt(v);renderAgePills();render();}
+
+/* ---------- render ---------- */
+function starsHtml(n){
+  let h='<div class="stars">';
+  for(let i=1;i<=5;i++)h+=i<=(n||0)?'★':'<span class="off">★</span>';
+  return h+'</div>';
+}
+function twinCell(b,idx,field,name,cls){
+  const note=parseNote(field==='oliver'?b.oliverNote:b.jacobNote);
+  const val=b[field];
+  const lbl=`<div class="lbl"><span class="dot ${cls}">${name[0]}</span>${name}</div>`;
+  if(!val&&!note.text&&!note.chips.length){
+    return `<div class="twin">${lbl}<div style="flex:1;">
+      <button class="rate ${cls}" onclick="openReview(${idx},'${field}')">★ Rate it</button>
+      <div class="hint">your turn, ${name}</div></div></div>`;
+  }
+  const chips=note.chips.slice(0,2).map(c=>`<span class="tag">${esc(c)}</span>`).join('');
+  return `<div class="twin">${lbl}<div style="flex:1;cursor:${isOwner?'pointer':'default'};" ${isOwner?`onclick="openReview(${idx},'${field}')"`:''}>
+    ${val?starsHtml(val):`<div style="font-size:13px;color:#66726D;">— did not read</div>`}
+    ${note.text?`<div class="qt">“${esc(note.text)}”</div>`:''}${chips?`<div>${chips}</div>`:''}
+  </div></div>`;
+}
+function statusBadge(b){
+  const map={read:['b-read','Read'],dnf:['b-dnf','Gave up'],notyet:['b-notyet','Not yet']};
+  const [c,l]=map[b.status]||map.read;
+  return `<div><span class="badge ${c}">${l}</span></div>`;
+}
+function boostCell(b,idx){
+  const on=boostedIds.has(b.id);
+  return `<button class="boost ${on?'on':''}" onclick="boost(${idx})" title="Boost this book">
+    <span class="arw">▲</span><span class="n">${b.boosts||0}</span></button>`;
+}
+function coverUrl(isbn,size){return isbn?'https://covers.openlibrary.org/b/isbn/'+encodeURIComponent(isbn)+'-'+(size||'M')+'.jpg?default=false':null;}
+function coverHtml(b,extraStyle,size){
+  const u=coverUrl(b.isbn,size);
+  const st=extraStyle?' style="'+extraStyle+'"':'';
+  return '<div class="cov"'+st+'>'+(u?'<img src="'+u+'" alt="" loading="lazy" onerror="this.remove()">':'')+'</div>';
+}
+function ageLine(b){return b.age?`good from ${b.age}+`:'age not set';}
+
+function render(){
+  const q=(document.getElementById('q').value||'').trim().toLowerCase();
+  const match=b=>{
+    if(ageFilter!=='all'&&(b.age==null||b.age<ageFilter))return false;
+    if(q){const hay=((b.title||'')+(b.author||'')+(b.recBy||'')).toLowerCase();if(!hay.includes(q))return false;}
+    return true;
+  };
+  const best=b=>Math.max(b.oliver||0,b.jacob||0);
+  const sortFn=(a,b)=>sortMode==='rating'?best(b)-best(a)
+    :sortMode==='age'?((a.age||99)-(b.age||99))
+    :((b.boosts||0)-(a.boosts||0));
+
+  const active=books.filter(b=>!b.isRec&&match(b)).sort(sortFn);
+  const recs=books.filter(b=>b.isRec&&match(b)).sort((a,b)=>(b.boosts||0)-(a.boosts||0));
+
+  _rows=[];
+  const html=[];
+  active.forEach(b=>{
+    const idx=_rows.length;_rows.push(b);
+    const mine=!b.oliver||!b.jacob;
+    html.push(`<div class="row ${mine?'mine':''}">
+      <div class="bk">${coverHtml(b)}<div style="min-width:0;">
+        <h3>${esc(b.title)||'Untitled'}</h3>
+        <div class="meta">${esc(b.author)||'Unknown'} · ${ageLine(b)}</div>
+        ${b.isbn?`<a class="getit" href="https://bookshop.org/a/124690/${esc(b.isbn)}" target="_blank" rel="noopener">Get it</a>`:''}
+      </div></div>
+      ${twinCell(b,idx,'oliver','Oliver','o')}
+      ${twinCell(b,idx,'jacob','Jacob','j')}
+      ${statusBadge(b)}
+      ${boostCell(b,idx)}
+    </div>`);
+  });
+
+  if(recs.length){
+    html.push(`<div class="divider"><div class="mono">Suggested by other people</div><div class="ln"></div>
+      <div style="font-size:12px;font-weight:700;color:#5E6B65;">Boost one to move it up</div></div>`);
+    recs.forEach(b=>{
+      const idx=_rows.length;_rows.push(b);
+      html.push(`<div class="row rec">
+        <div class="bk">${coverHtml(b,'background:repeating-linear-gradient(45deg,#EDE6D4 0 5px,#DFD7C2 5px 10px);')}
+          <div style="min-width:0;"><h3>${esc(b.title)||'Untitled'}</h3>
+          <div class="meta">${esc(b.author)||'Unknown'}</div></div></div>
+        <div><div class="recby">Recommended by ${esc(b.recBy)||'a friend'}</div>
+          ${b.recNote?`<div class="qt">“${esc(b.recNote)}”</div>`:''}</div>
+        <div>${isOwner
+          ?`<button class="badge b-notyet" onclick="promoteRec(${idx})">Add to list</button>`
+          :`<span class="badge b-notyet">Not yet read</span>`}</div>
+        ${boostCell(b,idx)}
+      </div>`);
+    });
+  }
+  if(!html.length) html.push(`<div style="padding:40px 0;text-align:center;color:#5E6B65;font-size:15px;">Nothing matches that. Try a wider age or a different search.</div>`);
+  document.getElementById('list').innerHTML=html.join('');
+
+  const readCount=books.filter(b=>b.status==='read').length;
+  const recCount=books.filter(b=>b.isRec).length;
+  const toRate=books.filter(b=>!b.isRec&&(!b.oliver||!b.jacob)).length;
+  document.getElementById('stats').textContent=`${readCount} read · ${toRate} waiting for a review · ${recCount} recommendation${recCount!==1?'s':''}`;
+}
+
+/* ---------- actions ---------- */
+async function boost(idx){
+  const b=_rows[idx];if(!b)return;
+  if(boostedIds.has(b.id)){b.boosts=Math.max(0,(b.boosts||0)-1);boostedIds.delete(b.id);}
+  else{b.boosts=(b.boosts||0)+1;boostedIds.add(b.id);}
+  localStorage.setItem('rl_boosted',JSON.stringify([...boostedIds]));
+  render();await saveBook(b);
+}
+async function promoteRec(idx){
+  if(!isOwner){showLogin();return;}
+  const b=_rows[idx];if(!b)return;
+  b.isRec=false;b.status='notyet';render();await saveBook(b);
+}
+
+/* ---------- review sheet ---------- */
+let sheet=null;
+function openReview(idx,field){
+  if(!isOwner){showLogin();return;}
+  const b=_rows[idx];if(!b)return;
+  const note=parseNote(field==='oliver'?b.oliverNote:b.jacobNote);
+  sheet={idx,field,stars:b[field]||0,status:b.status||'read',chips:[...note.chips],text:note.text,age:b.age||null};
+  drawSheet();
+}
+function drawSheet(){
+  const b=_rows[sheet.idx];
+  const name=sheet.field==='oliver'?'Oliver':'Jacob';
+  const other=sheet.field==='oliver'?'Jacob':'Oliver';
+  const cls=sheet.field==='oliver'?'o':'j';
+  const words=['','wouldn\'t bother','it was okay','pretty good','really good','one of the best'];
+  const chipList=[...CHIPS,other+' should read it'];
+  document.getElementById('modal').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()">
+    <div class="sheet">
+      <div class="sh-hd">
+        ${coverHtml(b,'background:repeating-linear-gradient(45deg,#E7E1D4 0 5px,#D8D1C1 5px 10px);','M')}
+        <div style="flex:1;min-width:0;">
+          <div class="dsp" style="font-weight:600;font-size:20px;line-height:1.15;">${esc(b.title)||'Untitled'}</div>
+          <div style="font-size:13px;color:#5E6B65;">${esc(b.author)||'Unknown'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:#E6F1FB;border-radius:999px;padding:5px 12px 5px 6px;">
+          <span class="dot ${cls}">${name[0]}</span><span style="font-size:13px;font-weight:800;color:#14507F;">${name}</span>
+        </div>
+      </div>
+
+      <div class="sh-sec">
+        <h4>Stars</h4>
+        <div class="starpick">
+          ${[1,2,3,4,5].map(i=>`<button class="${i<=sheet.stars?'lit':''} ${i===sheet.stars?'cur':''}" onclick="shSet('stars',${i})">★</button>`).join('')}
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#5E6B65;">
+          <span>Wouldn't bother</span>
+          <span style="font-weight:800;color:#0B1B2B;">${sheet.stars?sheet.stars+' — '+words[sheet.stars]:'tap a star'}</span>
+        </div>
+      </div>
+
+      <div class="sh-sec">
+        <h4>Did you finish it?</h4>
+        <div class="pillrow">
+          ${[['read','Finished it'],['dnf','Gave up'],['notyet','Still reading']].map(([v,l])=>
+            `<button class="pill ${sheet.status===v?'on':''}" onclick="shSet('status','${v}')">${l}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="sh-sec">
+        <h4>Tap what's true</h4>
+        <div class="pillrow">
+          ${chipList.map(c=>`<button class="chip ${sheet.chips.includes(c)?'on':''}" onclick="shChip(${JSON.stringify(c).replace(/"/g,'&quot;')})">${esc(c)}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="sh-sec">
+        <h4>Who could read this?</h4>
+        <div class="pillrow">
+          ${[6,8,10,12].map(a=>`<button class="pill ${sheet.age===a?'on':''}" onclick="shSet('age',${a})">${a}+</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="sh-sec" style="border-bottom:none;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <h4>Your line</h4>
+          <span style="font-size:13px;color:#5E6B65;">optional — the chips already say plenty</span>
+        </div>
+        <textarea id="sh-text" placeholder="The best bit was…" oninput="sheet.text=this.value">${esc(sheet.text)}</textarea>
+        <div class="pillrow">
+          <button class="chip sm" style="flex:none;" onclick="shStart('The best bit was ')">The best bit was…</button>
+          <button class="chip sm" style="flex:none;" onclick="shStart('It reminded me of ')">It reminded me of…</button>
+          <button class="chip sm" style="flex:none;" onclick="shStart('I would tell a friend ')">I'd tell a friend…</button>
+        </div>
+      </div>
+
+      <div class="sh-ft">
+        <button class="btn-dark" onclick="saveReview()">Post review</button>
+        <button class="btn-plain" onclick="closeModal()">Later</button>
+      </div>
+    </div>
+  </div>`;
+}
+function shSet(k,v){sheet[k]=(sheet[k]===v&&k!=='stars')?null:v;drawSheet();}
+function shChip(c){
+  const i=sheet.chips.indexOf(c);
+  if(i===-1)sheet.chips.push(c);else sheet.chips.splice(i,1);
+  drawSheet();
+}
+function shStart(prefix){
+  const ta=document.getElementById('sh-text');
+  if(!ta.value.trim()){ta.value=prefix;sheet.text=prefix;}
+  ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);
+}
+async function saveReview(){
+  const b=_rows[sheet.idx];if(!b)return;
+  b[sheet.field]=sheet.stars||null;
+  if(sheet.field==='oliver')b.oliverNote=encodeNote(sheet.chips,sheet.text);
+  else b.jacobNote=encodeNote(sheet.chips,sheet.text);
+  if(sheet.status)b.status=sheet.status;
+  if(sheet.age)b.age=sheet.age;
+  if(b.isRec&&(b.oliver||b.jacob))b.isRec=false;
+  closeModal();render();await saveBook(b);
+}
+
+/* ---------- recommend ---------- */
+function openRec(){
+  document.getElementById('modal').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()">
+    <div class="sheet">
+      <div style="background:#FBF1DF;border-bottom:1px solid #EBD5A8;padding:20px 24px;">
+        <div class="dsp" style="font-weight:700;font-size:22px;color:#4A2E06;">Suggest something for the twins</div>
+        <div style="font-size:13px;color:#7A5A22;margin-top:4px;">It shows up at the bottom of the list right away. Boosts push it up.</div>
+      </div>
+      <div class="sh-sec" style="border-bottom:none;display:flex;flex-direction:column;gap:14px;">
+        <div class="acwrap"><div class="mono" style="margin-bottom:6px;">Book title</div>
+          <input type="text" id="r-title" placeholder="Start typing — we'll find it" autocomplete="off" oninput="acType(this.value)">
+          <div id="r-ac"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div><div class="mono" style="margin-bottom:6px;">Author</div><input type="text" id="r-author" placeholder="Optional"></div>
+          <div><div class="mono" style="margin-bottom:6px;">Your name</div><input type="text" id="r-name" placeholder="So they know who"></div>
+        </div>
+        <div><div class="mono" style="margin-bottom:6px;">Why they'll love it</div>
+          <textarea id="r-note" placeholder="One or two lines is plenty…"></textarea></div>
+        <div id="r-msg" style="display:none;font-size:13px;font-weight:700;"></div>
+      </div>
+      <div class="sh-ft">
+        <button class="btn-dark" id="r-btn" style="background:#E8A33D;color:#22160A;" onclick="submitRec()">Send recommendation</button>
+        <button class="btn-plain" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>`;
+  setTimeout(()=>document.getElementById('r-title').focus(),50);
+}
+/* ---------- Open Library lookup ---------- */
+let acTimer=null, acPicked=null, acSeq=0;
+function acType(v){
+  acPicked=null;
+  clearTimeout(acTimer);
+  const box=document.getElementById('r-ac');
+  if(!box)return;
+  if(v.trim().length<3){box.innerHTML='';return;}
+  box.innerHTML='<div class="ac"><div class="acnote">Looking…</div></div>';
+  acTimer=setTimeout(()=>acSearch(v.trim()),350);
+}
+async function acSearch(q){
+  const seq=++acSeq;
+  const box=document.getElementById('r-ac');
+  try{
+    const res=await fetch('https://openlibrary.org/search.json?limit=6&fields=title,author_name,isbn,first_publish_year&q='+encodeURIComponent(q));
+    const data=await res.json();
+    if(seq!==acSeq||!box)return;
+    const hits=(data.docs||[]).slice(0,6);
+    if(!hits.length){box.innerHTML='<div class="ac"><div class="acnote">No match — just type it in yourself.</div></div>';return;}
+    window._acHits=hits.map(d=>({
+      title:d.title||'',
+      author:(d.author_name||[])[0]||'',
+      year:d.first_publish_year||'',
+      isbn:(d.isbn||[]).find(x=>x.length===13)||(d.isbn||[])[0]||null
+    }));
+    box.innerHTML='<div class="ac">'+window._acHits.map((h,i)=>{
+      const u=coverUrl(h.isbn,'S');
+      return '<button type="button" onclick="acPick('+i+')">'
+        +'<span class="th">'+(u?'<img src="'+u+'" alt="" onerror="this.remove()">':'')+'</span>'
+        +'<span><span class="t">'+esc(h.title)+'</span><br><span class="a">'+esc(h.author)+(h.year?' · '+h.year:'')+'</span></span>'
+        +'</button>';
+    }).join('')+'</div>';
+  }catch(e){
+    if(box&&seq===acSeq)box.innerHTML='<div class="ac"><div class="acnote">Lookup unavailable — type it in yourself.</div></div>';
+  }
+}
+function acPick(i){
+  const h=(window._acHits||[])[i];if(!h)return;
+  acPicked=h;
+  document.getElementById('r-title').value=h.title;
+  const a=document.getElementById('r-author');if(a&&!a.value.trim())a.value=h.author;
+  document.getElementById('r-ac').innerHTML='';
+  const n=document.getElementById('r-name');if(n&&!n.value.trim())n.focus();
+}
+
+async function submitRec(){
+  const title=document.getElementById('r-title').value.trim();
+  const msg=document.getElementById('r-msg'), btn=document.getElementById('r-btn');
+  if(!title){msg.style.display='block';msg.style.color='#B4443F';msg.textContent='A title is all we really need.';document.getElementById('r-title').focus();return;}
+  const b={id:null,title,author:document.getElementById('r-author').value.trim()||null,age:null,oliver:null,jacob:null,
+    status:'notyet',recBy:document.getElementById('r-name').value.trim()||null,
+    recNote:document.getElementById('r-note').value.trim()||null,boosts:0,isRec:true,
+    oliverNote:null,jacobNote:null,
+    isbn:(acPicked&&acPicked.title===title)?acPicked.isbn:null};
+  btn.textContent='Sending…';btn.disabled=true;
+  try{
+    books.push(b);await insertBook(b);render();
+    btn.textContent='✓ Added to the list';btn.style.background='#33600E';btn.style.color='#fff';
+    setTimeout(closeModal,1200);
+  }catch(e){
+    books=books.filter(x=>x!==b);
+    msg.style.display='block';msg.style.color='#B4443F';msg.textContent='Something went wrong — try again.';
+    btn.textContent='Send recommendation';btn.disabled=false;
+  }
+}
+
+/* ---------- export ---------- */
+function exportCSV(){
+  const sl={read:'Read',notyet:'Not yet read',dnf:'Did not finish'};
+  const st=n=>n?'★'.repeat(n):'';
+  const q=v=>v==null?'':'"'+String(v).replace(/"/g,'""')+'"';
+  const rows=[['Title','Author','Good from age','Oliver','Jacob','Status','Recommended by','Oliver review','Jacob review','Boosts'].join(',')];
+  books.forEach(b=>{
+    const o=parseNote(b.oliverNote), j=parseNote(b.jacobNote);
+    const flat=n=>[n.chips.join('; '),n.text].filter(Boolean).join(' — ');
+    rows.push([q(b.title),q(b.author),q(b.age),q(st(b.oliver)),q(st(b.jacob)),q(sl[b.status]||b.status),
+      q(b.recBy),q(flat(o)),q(flat(j)),q(b.boosts||0)].join(','));
+  });
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'}));
+  a.download='reading-list-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+/* ---------- polling (paused while typing / while a sheet is open) ---------- */
+let typing=false,typingTimer=null;
+document.addEventListener('focusin',e=>{if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT'){typing=true;clearTimeout(typingTimer);}});
+document.addEventListener('focusout',e=>{if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT'){typingTimer=setTimeout(()=>typing=false,3000);}});
+setInterval(async()=>{
+  if(typing||document.getElementById('modal').innerHTML)return;
+  try{const data=await sbFetch('books?order=is_rec.asc,updated_at.asc');if(data){books=data.map(dbToBook);render();}}catch(e){}
+},30000);
+
+loadAll();
+</script>
+</body>
+</html>
